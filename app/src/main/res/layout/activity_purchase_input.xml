@@ -96,6 +96,7 @@
         android:layout_width="217dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="28dp"
+        android:onClick="onClick"
         android:text="Abspeichern"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pricepercoin_editText" />
