@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="danielkreiter.simplecryptofolio.UI.ExpensesActivity">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:padding="6dp"
+        android:weightSum="2">
+
+        <Button
+            android:id="@+id/pie1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/orangepink"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Kaufwert" />
+
+
+        <Button
+            android:id="@+id/pie2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/lightblue"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:text="Momentanwert" />
+
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+</android.support.design.widget.CoordinatorLayout>
