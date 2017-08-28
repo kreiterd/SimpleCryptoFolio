@@ -15,6 +15,7 @@ import danielkreiter.simplecryptofolio.R;
 
 public class MainActivity extends AppCompatActivity {
 
+    private DbPurchase dbPurchase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,8 +24,12 @@ public class MainActivity extends AppCompatActivity {
         // inizialise facebooks stetho tool
         Stetho.initializeWithDefaults(this);
 
+
+        this.dbPurchase = new DbPurchase(this.getApplicationContext());
+
         // write some samples into the database
         writeExamplePurchases();
+
 
     }
 
@@ -35,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         p1.setPricepercoin(2);
         p1.setValue(105);
         p1.setDate("08.08.20");
-        long l = DbPurchase.writePurchase(p1, this.getApplicationContext());
+        long l = dbPurchase.writePurchase(p1);
         long id = l;
         Toast.makeText(getApplicationContext(), "Written: " + id, Toast.LENGTH_LONG).show();
 
@@ -45,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         p2.setPricepercoin(200);
         p2.setValue(205);
         p2.setDate("06.08.20");
-        id = DbPurchase.writePurchase(p2, this.getApplicationContext());
+        id = dbPurchase.writePurchase(p2);
         Toast.makeText(getApplicationContext(), "Written: " + id, Toast.LENGTH_LONG).show();
 
         Purchase p3 = new Purchase();
@@ -54,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         p3.setPricepercoin(2000);
         p3.setValue(205);
         p3.setDate("04.08.20");
-        id = DbPurchase.writePurchase(p3, this.getApplicationContext());
+        id = dbPurchase.writePurchase(p3);
         Toast.makeText(getApplicationContext(), "Written: " + id, Toast.LENGTH_LONG).show();
     }
 
@@ -67,6 +72,9 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.button_purchaseInputActivity:
                 startActivity(new Intent(this, PurchaseInputActivity.class));
+                break;
+            case R.id.overview:
+                startActivity(new Intent(this, OverviewActivity.class));
                 break;
         }
     }

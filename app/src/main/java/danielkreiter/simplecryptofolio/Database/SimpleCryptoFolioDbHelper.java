@@ -8,33 +8,31 @@ public class SimpleCryptoFolioDbHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "SimpleCryptoFolio.db";
+    private static SimpleCryptoFolioDbHelper instance = null;
 
+    private Context mContext;
 
-    private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + "Purchase" + " (" +
-                    SimpleCryptoFolioContract.Purchase._ID + " INTEGER PRIMARY KEY," +
-                    SimpleCryptoFolioContract.Purchase.COLUMN_NAME_VALUE + " REAL, " +
-                    SimpleCryptoFolioContract.Purchase.COLUMN_NAME_AMOUNT + " REAL, " +
-                    SimpleCryptoFolioContract.Purchase.COLUMN_NAME_PRICEPERCOIN + " REAL, " +
-                    SimpleCryptoFolioContract.Purchase.COLUMN_NAME_CURRENCYTYPE + " TEXT," +
-                    SimpleCryptoFolioContract.Purchase.COLUM_NAME_DATE + " TEXT)";
-
-    private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + SimpleCryptoFolioContract.Purchase.TABLE_NAME;
-
-
-    public SimpleCryptoFolioDbHelper(Context context) {
+    private SimpleCryptoFolioDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.mContext = context;
+    }
+
+    public static synchronized SimpleCryptoFolioDbHelper getInstance(Context context) {
+        if (instance == null) {
+            instance = new SimpleCryptoFolioDbHelper(context.getApplicationContext());
+        }
+        return instance;
     }
 
     public void onCreate(SQLiteDatabase db) {
-
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SimpleCryptoFolioContract.Purchase.SQL_CREATE_QUERY);
     }
 
+    // ToDo: implement
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 
+    // ToDo: implement
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
     }
 

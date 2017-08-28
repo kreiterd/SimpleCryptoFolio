@@ -3,4 +3,5 @@
     <string name="title_activity_currency">CurrencyActivity</string>
     <string name="title_activity_expenses">ExpensesActivity</string>
     <string name="title_activity_purchase_input">PurchaseInputActivity</string>
+    <string name="title_activity_overview">OverviewActivity</string>
 </resources>

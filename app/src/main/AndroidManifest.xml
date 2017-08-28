@@ -3,6 +3,7 @@
     package="danielkreiter.simplecryptofolio">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,6 +25,10 @@
         <activity
             android:name=".UI.PurchaseInputActivity"
             android:label="@string/title_activity_purchase_input"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.OverviewActivity"
+            android:label="@string/title_activity_overview"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

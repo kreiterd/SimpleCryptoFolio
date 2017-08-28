@@ -27,4 +27,15 @@
         android:text="PurchaseInput"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/expenses" />
+
+    <Button
+        android:id="@+id/overview"
+        android:layout_width="395dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:onClick="onClick"
+        android:text="Button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button_purchaseInputActivity" />
 </android.support.constraint.ConstraintLayout>

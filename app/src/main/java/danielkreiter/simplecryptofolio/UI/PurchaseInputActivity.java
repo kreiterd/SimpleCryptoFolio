@@ -21,11 +21,14 @@ public class PurchaseInputActivity extends AppCompatActivity implements ISendDat
     private EditText amount;
     private EditText pricepercoin;
 
+
+    private DbPurchase dbPurchase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_purchase_input);
-
+        dbPurchase = new DbPurchase(this.getApplicationContext());
 
         this.date = findViewById(R.id.date_editText);
         this.progressBar = findViewById(R.id.loadCurrencyData_ProgressBar);
@@ -70,7 +73,7 @@ public class PurchaseInputActivity extends AppCompatActivity implements ISendDat
         purchase.setDate(date.getText().toString());
         purchase.setPricepercoin(Double.parseDouble(pricepercoin.getText().toString()));
         purchase.setValue(Double.parseDouble(value.getText().toString()));
-        DbPurchase.writePurchase(purchase, this.getApplicationContext());
+        dbPurchase.writePurchase(purchase);
     }
 
     @Override

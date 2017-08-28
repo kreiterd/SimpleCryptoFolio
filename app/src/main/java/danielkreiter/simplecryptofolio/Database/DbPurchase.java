@@ -13,71 +13,15 @@ import danielkreiter.simplecryptofolio.Model.Purchase;
 
 public class DbPurchase {
     private static final String TAG = DbPurchase.class.getName();
-
-    private static final String[] projection = {
-            SimpleCryptoFolioContract.Purchase._ID,
-            SimpleCryptoFolioContract.Purchase.COLUMN_NAME_CURRENCYTYPE,
-            SimpleCryptoFolioContract.Purchase.COLUM_NAME_DATE,
-            SimpleCryptoFolioContract.Purchase.COLUMN_NAME_VALUE,
-            SimpleCryptoFolioContract.Purchase.COLUMN_NAME_AMOUNT,
-            SimpleCryptoFolioContract.Purchase.COLUMN_NAME_PRICEPERCOIN
-    };
-
-    public static long writePurchase(Purchase purchase, Context context) {
-        SimpleCryptoFolioDbHelper dbHelper = new SimpleCryptoFolioDbHelper(context);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_CURRENCYTYPE, purchase.getCurrencytype());
-        values.put(SimpleCryptoFolioContract.Purchase.COLUM_NAME_DATE, purchase.getDate());
-        values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_VALUE, purchase.getValue());
-        values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_AMOUNT, purchase.getAmount());
-        values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_PRICEPERCOIN, purchase.getPricepercoin());
-        long id = db.insert(SimpleCryptoFolioContract.Purchase.TABLE_NAME, null, values);
-        return id;
-
-    }
-
-    public static List<Purchase> readPurchases(Context context) {
-        SimpleCryptoFolioDbHelper dbHelper = new SimpleCryptoFolioDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                SimpleCryptoFolioContract.Purchase.TABLE_NAME,
-                projection,
-                null,
-                null,
-                null,
-                null,
-                null
-        );
-        List<Purchase> purchases = extractPurchases(cursor);
-        cursor.close();
-
-        return purchases;
-    }
-
-    public static Purchase readPurchase(long id, Context context) {
-        SimpleCryptoFolioDbHelper dbHelper = new SimpleCryptoFolioDbHelper(context);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
+    private Context mContext;
+    private SQLiteDatabase mDb;
 
 
-        String selection = SimpleCryptoFolioContract.Purchase._ID + " = ?";
-        String[] selectionArgs = {Long.toString(id)};
+    public DbPurchase(Context context) {
+        this.mContext = context;
+        SimpleCryptoFolioDbHelper dbHelper = SimpleCryptoFolioDbHelper.getInstance(mContext);
+        mDb = dbHelper.getReadableDatabase();
 
-
-        Cursor cursor = db.query(
-                SimpleCryptoFolioContract.Purchase.TABLE_NAME,
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                null
-        );
-
-        List<Purchase> purchases = extractPurchases(cursor);
-        cursor.close();
-        return purchases.get(0);
     }
 
     private static List<Purchase> extractPurchases(Cursor cursor) {
@@ -93,5 +37,68 @@ public class DbPurchase {
             purchases.add(purchase);
         }
         return purchases;
+    }
+
+    public long writePurchase(Purchase purchase) {
+        ContentValues values = new ContentValues();
+        values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_CURRENCYTYPE, purchase.getCurrencytype());
+        values.put(SimpleCryptoFolioContract.Purchase.COLUM_NAME_DATE, purchase.getDate());
+        values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_VALUE, purchase.getValue());
+        values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_AMOUNT, purchase.getAmount());
+        values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_PRICEPERCOIN, purchase.getPricepercoin());
+        long id = mDb.insert(SimpleCryptoFolioContract.Purchase.TABLE_NAME, null, values);
+        return id;
+
+    }
+
+    public List<Purchase> readPurchases() {
+
+        String tableName = SimpleCryptoFolioContract.Purchase.TABLE_NAME;
+        String[] tableColums = SimpleCryptoFolioContract.Purchase.TABLE_COLUMN_NAMES;
+
+        Cursor cursor = createCursor(
+                tableName,
+                tableColums,
+                null,
+                null,
+                null,
+                null,
+                null);
+
+        List<Purchase> purchases = extractPurchases(cursor);
+        cursor.close();
+        return purchases;
+    }
+
+    public Purchase readPurchase(long id) {
+        String tableName = SimpleCryptoFolioContract.Purchase.TABLE_NAME;
+        String[] tableColums = SimpleCryptoFolioContract.Purchase.TABLE_COLUMN_NAMES;
+        String whereClause = SimpleCryptoFolioContract.Purchase._ID + " = ?";
+        String[] whereArgs = {Long.toString(id)};
+
+        Cursor cursor = createCursor(tableName,
+                tableColums,
+                whereClause,
+                whereArgs,
+                null,
+                null,
+                null);
+
+
+        List<Purchase> purchases = extractPurchases(cursor);
+        cursor.close();
+        return purchases.get(0);
+    }
+
+    private Cursor createCursor(String tableName, String[] tableColumns, String whereClause, String[] whereArgs, String groupBy, String having, String orderBy) {
+        return mDb.query(
+                tableName,
+                tableColumns,
+                whereClause,
+                whereArgs,
+                groupBy,
+                having,
+                orderBy
+        );
     }
 }

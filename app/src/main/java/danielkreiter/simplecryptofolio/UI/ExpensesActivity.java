@@ -29,8 +29,8 @@ public class ExpensesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expenses);
-
-        purchases = DbPurchase.readPurchases(this.getApplicationContext());
+        DbPurchase dbPurchase = new DbPurchase(this.getApplicationContext());
+        purchases = dbPurchase.readPurchases();
 
         createPieChart(purchases);
     }
