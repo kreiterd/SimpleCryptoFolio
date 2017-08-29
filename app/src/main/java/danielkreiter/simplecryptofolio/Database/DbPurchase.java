@@ -4,7 +4,6 @@ package danielkreiter.simplecryptofolio.Database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +13,13 @@ import danielkreiter.simplecryptofolio.Model.Purchase;
 public class DbPurchase {
     private static final String TAG = DbPurchase.class.getName();
     private Context mContext;
-    private SQLiteDatabase mDb;
+    private SimpleCryptoFolioDbHelper simpleCryptoFolioDbHelper;
 
 
     public DbPurchase(Context context) {
         this.mContext = context;
         SimpleCryptoFolioDbHelper dbHelper = SimpleCryptoFolioDbHelper.getInstance(mContext);
-        mDb = dbHelper.getReadableDatabase();
-
+        this.simpleCryptoFolioDbHelper = SimpleCryptoFolioDbHelper.getInstance(context);
     }
 
     private static List<Purchase> extractPurchases(Cursor cursor) {
@@ -39,6 +37,15 @@ public class DbPurchase {
         return purchases;
     }
 
+    public void deletePurchase(long id) {
+        String tableName = SimpleCryptoFolioContract.Purchase.TABLE_NAME;
+        String whereClause = SimpleCryptoFolioContract.Purchase._ID + " = ?";
+        String[] whereArgs = {Long.toString(id)};
+        simpleCryptoFolioDbHelper.deleteFromDatabase(tableName,
+                whereClause,
+                whereArgs);
+    }
+
     public long writePurchase(Purchase purchase) {
         ContentValues values = new ContentValues();
         values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_CURRENCYTYPE, purchase.getCurrencytype());
@@ -46,9 +53,7 @@ public class DbPurchase {
         values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_VALUE, purchase.getValue());
         values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_AMOUNT, purchase.getAmount());
         values.put(SimpleCryptoFolioContract.Purchase.COLUMN_NAME_PRICEPERCOIN, purchase.getPricepercoin());
-        long id = mDb.insert(SimpleCryptoFolioContract.Purchase.TABLE_NAME, null, values);
-        return id;
-
+        return simpleCryptoFolioDbHelper.writeToDatabase(SimpleCryptoFolioContract.Purchase.TABLE_NAME, values);
     }
 
     public List<Purchase> readPurchases() {
@@ -56,7 +61,7 @@ public class DbPurchase {
         String tableName = SimpleCryptoFolioContract.Purchase.TABLE_NAME;
         String[] tableColums = SimpleCryptoFolioContract.Purchase.TABLE_COLUMN_NAMES;
 
-        Cursor cursor = createCursor(
+        Cursor cursor = simpleCryptoFolioDbHelper.readFromDatabase(
                 tableName,
                 tableColums,
                 null,
@@ -76,7 +81,7 @@ public class DbPurchase {
         String whereClause = SimpleCryptoFolioContract.Purchase._ID + " = ?";
         String[] whereArgs = {Long.toString(id)};
 
-        Cursor cursor = createCursor(tableName,
+        Cursor cursor = simpleCryptoFolioDbHelper.readFromDatabase(tableName,
                 tableColums,
                 whereClause,
                 whereArgs,
@@ -90,15 +95,5 @@ public class DbPurchase {
         return purchases.get(0);
     }
 
-    private Cursor createCursor(String tableName, String[] tableColumns, String whereClause, String[] whereArgs, String groupBy, String having, String orderBy) {
-        return mDb.query(
-                tableName,
-                tableColumns,
-                whereClause,
-                whereArgs,
-                groupBy,
-                having,
-                orderBy
-        );
-    }
+
 }
