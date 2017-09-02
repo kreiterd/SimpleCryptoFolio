@@ -5,11 +5,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import java.util.Arrays;
 
 public class SimpleCryptoFolioDbHelper extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "SimpleCryptoFolio.db";
+    public static final String TAG = "DbHelper";
     private static SimpleCryptoFolioDbHelper instance = null;
 
     private Context mContext;
@@ -39,14 +43,17 @@ public class SimpleCryptoFolioDbHelper extends SQLiteOpenHelper {
     }
 
     public long writeToDatabase(String tablename, ContentValues values) {
-        return this.getWritableDatabase().insert(
+        long id = this.getWritableDatabase().insert(
                 tablename,
                 null,
                 values);
+        Log.d(TAG, "Database-Write! tablename = " + tablename + " || values: " + values.toString() + " || id: " + id);
+        return id;
+
     }
 
     public Cursor readFromDatabase(String tableName, String[] tableColumns, String whereClause, String[] whereArgs, String groupBy, String having, String orderBy) {
-        return this.getReadableDatabase().query(
+        Cursor cursor = this.getReadableDatabase().query(
                 tableName,
                 tableColumns,
                 whereClause,
@@ -55,6 +62,12 @@ public class SimpleCryptoFolioDbHelper extends SQLiteOpenHelper {
                 having,
                 orderBy
         );
+
+        Log.d(TAG, "Database-Read! tablename = " + tableName + " || tableColumns: "
+                + Arrays.toString(tableColumns) + " || whereClause: " + whereClause + " || whereArgs: "
+                + whereArgs + " || groupBy " + groupBy + " || having: " + having + " || orderBy: "
+                + orderBy);
+        return cursor;
     }
 
     public void deleteFromDatabase(String tableName, String whereClause, String[] whereArgs) {
@@ -62,6 +75,8 @@ public class SimpleCryptoFolioDbHelper extends SQLiteOpenHelper {
                 tableName,
                 whereClause,
                 whereArgs);
+        Log.d(TAG, "Database-Delete! tablename = " + tableName + " || whereClause: "
+                + whereClause + " || whereArgs: " + Arrays.toString(whereArgs));
     }
 
 }

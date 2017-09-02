@@ -1,7 +1,9 @@
 package danielkreiter.simplecryptofolio.Model;
 
 
-public class Purchase {
+import danielkreiter.simplecryptofolio.UI.CheckableListItem;
+
+public class Purchase extends CheckableListItem {
 
 
     private long id;

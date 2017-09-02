@@ -31,16 +31,18 @@ public class OverviewActivity extends AppCompatActivity {
 
         // set views
         this.overviewList = findViewById(R.id.overview_listview);
-        this.getChecked = findViewById(R.id.getChecked_button);
+        this.overviewList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        this.getChecked = findViewById(R.id.delete_button);
 
         // logic
         dbPurchase = new DbPurchase(this.getApplicationContext());
         purchases = dbPurchase.readPurchases();
 
-        // update view
-        updateView();
-
+        // adapter
+        PurchaseOverviewAdapter adapter = new PurchaseOverviewAdapter(this, purchases);
+        overviewList.setAdapter(adapter);
     }
+
 
 
     private void updateResultList() {
@@ -54,23 +56,24 @@ public class OverviewActivity extends AppCompatActivity {
 
         overviewList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         overviewList.setAdapter(adapter);
-
-
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.getChecked_button:
-                String selected = "";
-                int choiceCounter = overviewList.getCount();
-                SparseBooleanArray sparseBooleanArray = overviewList.getCheckedItemPositions();
-                for (int i = 0; i < choiceCounter; i++) {
-                    if (sparseBooleanArray.get(i))
-                        selected += "Selected Item - id: " + (i + 1) + "\n";
-                }
-
+            case R.id.delete_button:
+                deletePurcheses();
                 break;
         }
+    }
+
+    private void deletePurcheses() {
+        int choiceCounter = overviewList.getCount();
+        SparseBooleanArray sparseBooleanArray = overviewList.getCheckedItemPositions();
+        for (int i = 0; i < choiceCounter; i++) {
+            if (sparseBooleanArray.get(i))
+                dbPurchase.deletePurchase(i + 1);
+        }
+        updateView();
     }
 
     private void updateView() {

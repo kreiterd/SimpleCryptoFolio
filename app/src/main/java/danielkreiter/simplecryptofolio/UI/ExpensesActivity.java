@@ -31,12 +31,10 @@ public class ExpensesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_expenses);
         DbPurchase dbPurchase = new DbPurchase(this.getApplicationContext());
         purchases = dbPurchase.readPurchases();
-
         createPieChart(purchases);
     }
 
     void createPieChart(List<Purchase> purchases) {
-
         PieChart chart = findViewById(R.id.chart);
         List<PieEntry> entries = new ArrayList<>();
         List<Integer> colors = new ArrayList<>();

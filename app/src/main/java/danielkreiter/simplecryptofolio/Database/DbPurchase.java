@@ -40,7 +40,7 @@ public class DbPurchase {
     public void deletePurchase(long id) {
         String tableName = SimpleCryptoFolioContract.Purchase.TABLE_NAME;
         String whereClause = SimpleCryptoFolioContract.Purchase._ID + " = ?";
-        String[] whereArgs = {Long.toString(id)};
+        String[] whereArgs = {String.valueOf(id)};
         simpleCryptoFolioDbHelper.deleteFromDatabase(tableName,
                 whereClause,
                 whereArgs);
