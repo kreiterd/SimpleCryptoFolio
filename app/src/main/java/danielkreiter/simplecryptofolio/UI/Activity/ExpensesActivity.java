@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI;
+package danielkreiter.simplecryptofolio.UI.Activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -19,6 +19,7 @@ import java.util.Random;
 import danielkreiter.simplecryptofolio.Database.DbPurchase;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
+import danielkreiter.simplecryptofolio.UI.PieChartValueFormatter;
 
 
 public class ExpensesActivity extends AppCompatActivity {

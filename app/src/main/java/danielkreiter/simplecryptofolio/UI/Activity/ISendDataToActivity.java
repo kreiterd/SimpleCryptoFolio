@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI;
+package danielkreiter.simplecryptofolio.UI.Activity;
 
 public interface ISendDataToActivity {
 

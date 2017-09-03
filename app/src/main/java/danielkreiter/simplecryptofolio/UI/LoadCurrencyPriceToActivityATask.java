@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.AsyncTask;
 
 import danielkreiter.simplecryptofolio.CryptocurrencyData.CryptocurrencyDataProvider;
+import danielkreiter.simplecryptofolio.UI.Activity.ISendDataToActivity;
 
 public class LoadCurrencyPriceToActivityATask extends AsyncTask<String, String, String> {
 

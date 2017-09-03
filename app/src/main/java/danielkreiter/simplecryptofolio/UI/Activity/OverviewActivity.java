@@ -1,18 +1,17 @@
-package danielkreiter.simplecryptofolio.UI;
+package danielkreiter.simplecryptofolio.UI.Activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import danielkreiter.simplecryptofolio.Database.DbPurchase;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
+import danielkreiter.simplecryptofolio.UI.PurchaseOverviewAdapter;
 
 public class OverviewActivity extends AppCompatActivity {
 
@@ -43,20 +42,6 @@ public class OverviewActivity extends AppCompatActivity {
         overviewList.setAdapter(adapter);
     }
 
-
-
-    private void updateResultList() {
-        List<String> purchaseStrings = new ArrayList<>();
-        for (Purchase purchase : purchases) {
-            purchaseStrings.add(purchase.getId() + ", " + purchase.getCurrencytype()
-                    + " - Anzahl: " + purchase.getAmount() + " Gesamt: " + purchase.getValue());
-        }
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_multiple_choice, purchaseStrings);
-
-        overviewList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        overviewList.setAdapter(adapter);
-    }
 
     public void onClick(View v) {
         switch (v.getId()) {

@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI;
+package danielkreiter.simplecryptofolio.UI.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,7 +8,9 @@ import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 
+import danielkreiter.simplecryptofolio.Database.DbCryptocurrency;
 import danielkreiter.simplecryptofolio.Database.DbPurchase;
+import danielkreiter.simplecryptofolio.Model.Cryptocurrency;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
 
@@ -16,20 +18,36 @@ import danielkreiter.simplecryptofolio.R;
 public class MainActivity extends AppCompatActivity {
 
     private DbPurchase dbPurchase;
+    private DbCryptocurrency dbCryptocurrency;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        this.getApplicationContext().deleteDatabase("SimpleCryptoFolio.db");
 
         // inizialise facebooks stetho tool
         Stetho.initializeWithDefaults(this);
 
 
         this.dbPurchase = new DbPurchase(this.getApplicationContext());
+        this.dbCryptocurrency = new DbCryptocurrency(this.getApplicationContext());
 
         // write some samples into the database
         writeExamplePurchases();
+        // writeExampleCryptocurrencies();
 
+
+    }
+
+    void writeExampleCryptocurrencies() {
+        Cryptocurrency cryptocurrency1 = new Cryptocurrency();
+        cryptocurrency1.setName("ETH");
+        Cryptocurrency cryptocurrency2 = new Cryptocurrency();
+        cryptocurrency2.setName("BTC");
+        dbCryptocurrency.writeCryptocurrency(cryptocurrency1);
+        dbCryptocurrency.writeCryptocurrency(cryptocurrency2);
 
     }
 

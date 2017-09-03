@@ -18,7 +18,6 @@ public class DbPurchase {
 
     public DbPurchase(Context context) {
         this.mContext = context;
-        SimpleCryptoFolioDbHelper dbHelper = SimpleCryptoFolioDbHelper.getInstance(mContext);
         this.simpleCryptoFolioDbHelper = SimpleCryptoFolioDbHelper.getInstance(context);
     }
 

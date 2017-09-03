@@ -7,6 +7,20 @@ public class SimpleCryptoFolioContract {
     private SimpleCryptoFolioContract() {
     }
 
+    public static class Cryptocurrency implements BaseColumns {
+        public static final String TABLE_NAME = "cryptocurrency";
+        public static final String COLUMN_NAME_NAME = "name";
+
+        public static final String SQL_CREATE_QUERY = "CREATE TABLE " + TABLE_NAME + " (" +
+                _ID + " INTEGER PRIMARY KEY," +
+                COLUMN_NAME_NAME + " REAL)";
+
+        public static final String[] TABLE_COLUMN_NAMES = {
+                _ID,
+                COLUMN_NAME_NAME,
+        };
+    }
+
     public static class Purchase implements BaseColumns {
         public static final String TABLE_NAME = "purchase";
         public static final String COLUMN_NAME_CURRENCYTYPE = "currencytype";

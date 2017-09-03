@@ -15,6 +15,7 @@ import java.net.URL;
 public class CryptoCompareApiWrapper implements IApiWrapper {
 
 
+    public static final int NO_DATA_AVAILABLE = -1;
     private final static String baseURL = "https://min-api.cryptocompare.com";
     private HttpURLConnection urlConnection;
 
@@ -47,8 +48,14 @@ public class CryptoCompareApiWrapper implements IApiWrapper {
         }
 
         // ToDo: Errorhandling when no matching currency is found and the api returns an error
+        if (result.equals("")) {
+            return NO_DATA_AVAILABLE;
+        }
         JsonObject jsonObject = new JsonParser().parse(result.toString()).getAsJsonObject();
-
-        return jsonObject.get(destinationCurrencyTag).getAsDouble();
+        if (!jsonObject.has(destinationCurrencyTag)) {
+            return NO_DATA_AVAILABLE;
+        } else {
+            return jsonObject.get(destinationCurrencyTag).getAsDouble();
+        }
     }
 }

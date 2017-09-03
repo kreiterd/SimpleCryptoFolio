@@ -32,6 +32,7 @@ public class SimpleCryptoFolioDbHelper extends SQLiteOpenHelper {
 
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SimpleCryptoFolioContract.Purchase.SQL_CREATE_QUERY);
+        db.execSQL(SimpleCryptoFolioContract.Cryptocurrency.SQL_CREATE_QUERY);
     }
 
     // ToDo: implement
