@@ -8,6 +8,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import danielkreiter.simplecryptofolio.Model.Purchase;
@@ -16,13 +17,15 @@ import danielkreiter.simplecryptofolio.R;
 public class PurchaseOverviewAdapter extends ArrayAdapter<Purchase> {
 
     private final Activity context;
-    List<Purchase> purachses;
+    List<Purchase> mPurchases;
+    List<Purchase> mChecked;
 
 
     public PurchaseOverviewAdapter(Activity context, List<Purchase> purchases) {
         super(context, R.layout.purchase_overview_listitem, purchases);
         this.context = context;
-        this.purachses = purchases;
+        this.mPurchases = purchases;
+        mChecked = new ArrayList<>();
     }
 
     @Override
@@ -48,8 +51,23 @@ public class PurchaseOverviewAdapter extends ArrayAdapter<Purchase> {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     int getPosition = (Integer) buttonView.getTag();
-                    Boolean b = buttonView.isChecked();
-                    purachses.get(getPosition).setChecked(b);
+                    Purchase purchase = mPurchases.get(getPosition);
+                    // Boolean isChecked = buttonView.isChecked();
+                    purchase.setChecked(isChecked);
+
+                  /*
+                   * better performance but higher code complexity
+                   *
+
+                   if (isChecked && !mChecked.contains(purchase)) {
+                        mChecked.add(purchase);
+                    }
+                    if (!isChecked && mChecked.contains(purchase)) {
+                        mChecked.remove(purchase);
+                    }
+
+                    */
+
                 }
             });
             convertView.setTag(viewHolder);
@@ -68,19 +86,38 @@ public class PurchaseOverviewAdapter extends ArrayAdapter<Purchase> {
 
         viewHolder.checked.setTag(position);
 
-        viewHolder.id.setText(String.valueOf(purachses.get(position).getId()));
+        Purchase purchase = mPurchases.get(position);
+        viewHolder.id.setText(String.valueOf(purchase.getId()));
 
-        viewHolder.id.setText("" + String.valueOf(purachses.get(position).getId()));
-        viewHolder.currencytype.setText(" " + purachses.get(position).getCurrencytype());
-        viewHolder.date.setText(" " + purachses.get(position).getDate());
+        viewHolder.id.setText("" + String.valueOf(purchase.getId()));
+        viewHolder.currencytype.setText(" " + purchase.getCurrencytype());
+        viewHolder.date.setText(" " + purchase.getDate());
         viewHolder.value.setText("");
-        viewHolder.amount.setText(String.valueOf(purachses.get(position).getAmount()));
+        viewHolder.amount.setText(String.valueOf(purchase.getAmount()));
         viewHolder.pricepercoin.setText("");
 
-        viewHolder.checked.setChecked(purachses.get(position).isChecked());
+        viewHolder.checked.setChecked(purchase.isChecked());
 
         return convertView;
 
+    }
+
+    public List<Purchase> getAllChecked() {
+        updateChecked();
+        return mChecked;
+    }
+
+    private void updateChecked() {
+        mChecked.clear();
+        for (Purchase p : mPurchases) {
+            if (p.isChecked()) this.mChecked.add(p);
+        }
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        updateChecked();
+        super.notifyDataSetChanged();
     }
 
     private static class ViewHolder {
@@ -92,6 +129,4 @@ public class PurchaseOverviewAdapter extends ArrayAdapter<Purchase> {
         TextView pricepercoin;
         CheckBox checked;
     }
-
-
 }

@@ -2,7 +2,6 @@ package danielkreiter.simplecryptofolio.UI;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseBooleanArray;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -21,6 +20,7 @@ public class OverviewActivity extends AppCompatActivity {
     Button getChecked;
 
     List<Purchase> purchases;
+    PurchaseOverviewAdapter adapter;
 
     private DbPurchase dbPurchase;
 
@@ -39,7 +39,7 @@ public class OverviewActivity extends AppCompatActivity {
         purchases = dbPurchase.readPurchases();
 
         // adapter
-        PurchaseOverviewAdapter adapter = new PurchaseOverviewAdapter(this, purchases);
+        adapter = new PurchaseOverviewAdapter(this, purchases);
         overviewList.setAdapter(adapter);
     }
 
@@ -61,23 +61,18 @@ public class OverviewActivity extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.delete_button:
-                deletePurcheses();
+                deletePurchases();
                 break;
         }
     }
 
-    private void deletePurcheses() {
-        int choiceCounter = overviewList.getCount();
-        SparseBooleanArray sparseBooleanArray = overviewList.getCheckedItemPositions();
-        for (int i = 0; i < choiceCounter; i++) {
-            if (sparseBooleanArray.get(i))
-                dbPurchase.deletePurchase(i + 1);
+    private void deletePurchases() {
+        for (Purchase p : adapter.getAllChecked()) {
+            dbPurchase.deletePurchase(p.getId());
+            purchases.remove(p);
         }
-        updateView();
+        adapter.notifyDataSetChanged();
     }
 
-    private void updateView() {
-        updateResultList();
-    }
 }
 

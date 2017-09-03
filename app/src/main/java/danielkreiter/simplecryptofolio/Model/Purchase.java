@@ -76,6 +76,6 @@ public class Purchase extends CheckableListItem {
 
 
     public String toString() {
-        return "currencytype: " + this.getCurrencytype() + "; date: " + this.getDate() + "; value: " + this.getValue() + "; amount: " + this.getAmount() + "; pricepercoin: " + this.pricepercoin;
+        return "Id: " + this.getId() + "currencytype: " + this.getCurrencytype() + "; date: " + this.getDate() + "; value: " + this.getValue() + "; amount: " + this.getAmount() + "; pricepercoin: " + this.pricepercoin;
     }
 }
