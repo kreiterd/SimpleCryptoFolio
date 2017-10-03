@@ -3,6 +3,7 @@ package danielkreiter.simplecryptofolio.UI.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import danielkreiter.simplecryptofolio.Database.DbPurchase;
 import danielkreiter.simplecryptofolio.Model.Purchase;
@@ -51,6 +53,13 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
 
     void loadCurrencyData() {
 
+        for (Purchase purchase : mPurchases) {
+            if (mTotalAmount.containsKey(purchase.getCurrencytype())) {
+                mTotalAmount.put(purchase.getCurrencytype(), mTotalAmount.get(purchase.getCurrencytype()) + purchase.getAmount());
+            } else {
+                mTotalAmount.put(purchase.getCurrencytype(), purchase.getAmount());
+            }
+        }
 
         Iterator it = mTotalAmount.entrySet().iterator();
         while (it.hasNext()) {
@@ -66,18 +75,11 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
 
 
     void createCurrentValueChart() {
-        for (Purchase purchase : mPurchases) {
-            if (mTotalAmount.containsKey(purchase.getCurrencytype())) {
-                mTotalAmount.put(purchase.getCurrencytype(), mTotalAmount.get(purchase.getCurrencytype()) + purchase.getAmount());
-            } else {
-                mTotalAmount.put(purchase.getCurrencytype(), purchase.getAmount());
-            }
-        }
 
 
         // create the dataSet
         mDataSet = new PieDataSet(mEntries, "Label");
-        mDataSet.setColors(mColors);
+        //mDataSet.setColors(mColors);
         mDataSet.setValueTextSize(12f);
         mDataSet.setValueTextColor(Color.WHITE);
 
@@ -102,8 +104,12 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
         while (iter.hasNext()) {
             String key = iter.next();
             try {
-                PieEntry pieEntry = new PieEntry((float) result.getDouble(key), key);
+                PieEntry pieEntry = new PieEntry((float) result.getDouble(key) * this.mTotalAmount.get(key).floatValue(), key);
+
                 mDataSet.addEntry(pieEntry);
+                Random rnd = new Random();
+                int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                mDataSet.addColor(color);
                 mChart.notifyDataSetChanged(); // let the chart know it's data changed
                 mChart.invalidate(); // refresh
             } catch (JSONException e) {
@@ -116,5 +122,8 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
     @Override
     public void preExecuteUpdateView() {
 
+    }
+
+    public void onClick(View view) {
     }
 }

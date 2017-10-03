@@ -94,6 +94,7 @@ public class ExpensesActivity extends AppCompatActivity {
                 startActivity(new Intent(this, PurchaseInputActivity.class));
                 break;
             case R.id.currentvalue_button:
+                startActivity(new Intent(this, CurrentValuePieChartActivity.class));
                 break;
 
         }
