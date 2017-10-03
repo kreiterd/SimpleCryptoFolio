@@ -6,76 +6,76 @@ import danielkreiter.simplecryptofolio.UI.CheckableListItem;
 public class Purchase extends CheckableListItem {
 
 
-    private long id;
-    private String currencytype;
-    private String date;
-    private double value;
-    private double amount;
-    private double pricepercoin;
+    private long mId;
+    private String mCurrencytype;
+    private String mDate;
+    private double mValue;
+    private double mAmount;
+    private double mPricepercoin;
 
     public Purchase() {
 
     }
 
     public Purchase(String currencytype, String date, Double value, Double amount, Double pricepercoin) {
-        this.currencytype = currencytype;
-        this.date = date;
-        this.value = value;
-        this.amount = amount;
-        this.pricepercoin = pricepercoin;
+        this.mCurrencytype = currencytype;
+        this.mDate = date;
+        this.mValue = value;
+        this.mAmount = amount;
+        this.mPricepercoin = pricepercoin;
     }
 
     public long getId() {
-        return id;
+        return mId;
     }
 
     public void setId(long id) {
-        this.id = id;
+        this.mId = id;
     }
 
 
     public String getCurrencytype() {
-        return currencytype;
+        return mCurrencytype;
     }
 
     public void setCurrencytype(String currencytype) {
-        this.currencytype = currencytype;
+        this.mCurrencytype = currencytype;
     }
 
     public String getDate() {
-        return date;
+        return mDate;
     }
 
     public void setDate(String date) {
-        this.date = date;
+        this.mDate = date;
     }
 
     public double getValue() {
-        return value;
+        return mValue;
     }
 
     public void setValue(double value) {
-        this.value = value;
+        this.mValue = value;
     }
 
     public double getAmount() {
-        return amount;
+        return mAmount;
     }
 
     public void setAmount(double amount) {
-        this.amount = amount;
+        this.mAmount = amount;
     }
 
     public double getPricepercoin() {
-        return pricepercoin;
+        return mPricepercoin;
     }
 
     public void setPricepercoin(double pricepercoin) {
-        this.pricepercoin = pricepercoin;
+        this.mPricepercoin = pricepercoin;
     }
 
 
     public String toString() {
-        return "Id: " + this.getId() + "currencytype: " + this.getCurrencytype() + "; date: " + this.getDate() + "; value: " + this.getValue() + "; amount: " + this.getAmount() + "; pricepercoin: " + this.pricepercoin;
+        return "Id: " + this.getId() + "currencytype: " + this.getCurrencytype() + "; date: " + this.getDate() + "; value: " + this.getValue() + "; amount: " + this.getAmount() + "; pricepercoin: " + this.getPricepercoin();
     }
 }

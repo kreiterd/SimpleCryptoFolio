@@ -15,8 +15,8 @@ import danielkreiter.simplecryptofolio.UI.PurchaseOverviewAdapter;
 
 public class OverviewActivity extends AppCompatActivity {
 
-    ListView overviewList;
-    Button getChecked;
+    ListView mOverviewList;
+    Button mGetChecked;
 
     List<Purchase> purchases;
     PurchaseOverviewAdapter adapter;
@@ -29,9 +29,9 @@ public class OverviewActivity extends AppCompatActivity {
         setContentView(R.layout.activity_overview);
 
         // set views
-        this.overviewList = findViewById(R.id.overview_listview);
-        this.overviewList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        this.getChecked = findViewById(R.id.delete_button);
+        this.mOverviewList = findViewById(R.id.overview_listview);
+        this.mOverviewList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        this.mGetChecked = findViewById(R.id.delete_button);
 
         // logic
         dbPurchase = new DbPurchase(this.getApplicationContext());
@@ -39,7 +39,7 @@ public class OverviewActivity extends AppCompatActivity {
 
         // adapter
         adapter = new PurchaseOverviewAdapter(this, purchases);
-        overviewList.setAdapter(adapter);
+        mOverviewList.setAdapter(adapter);
     }
 
 

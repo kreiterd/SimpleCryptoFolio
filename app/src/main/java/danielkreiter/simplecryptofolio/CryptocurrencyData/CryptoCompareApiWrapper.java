@@ -16,8 +16,8 @@ public class CryptoCompareApiWrapper implements IApiWrapper {
 
 
     public static final int NO_DATA_AVAILABLE = -1;
-    private final static String baseURL = "https://min-api.cryptocompare.com";
-    private HttpURLConnection urlConnection;
+    private final static String mBaseURL = "https://min-api.cryptocompare.com";
+    private HttpURLConnection mUrlConnection;
 
     public CryptoCompareApiWrapper() {
 
@@ -27,10 +27,10 @@ public class CryptoCompareApiWrapper implements IApiWrapper {
         StringBuilder result = new StringBuilder();
         if (sourceCurrencyTag.equals("") || destinationCurrencyTag.equals("")) return 0;
         try {
-            String request = baseURL + "/data/price?fsym=" + sourceCurrencyTag + "&tsyms=" + destinationCurrencyTag;
+            String request = mBaseURL + "/data/price?fsym=" + sourceCurrencyTag + "&tsyms=" + destinationCurrencyTag;
             URL url = new URL(request);
-            urlConnection = (HttpURLConnection) url.openConnection();
-            InputStream in = new BufferedInputStream(urlConnection.getInputStream());
+            mUrlConnection = (HttpURLConnection) url.openConnection();
+            InputStream in = new BufferedInputStream(mUrlConnection.getInputStream());
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
@@ -44,7 +44,7 @@ public class CryptoCompareApiWrapper implements IApiWrapper {
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            urlConnection.disconnect();
+            mUrlConnection.disconnect();
         }
 
         // ToDo: Errorhandling when no matching currency is found and the api returns an error

@@ -26,17 +26,17 @@ import danielkreiter.simplecryptofolio.UI.PieChartValueFormatter;
 
 public class ExpensesActivity extends AppCompatActivity {
 
-    List<Purchase> purchases;
+    List<Purchase> mPurchases;
 
-    DbPurchase dbPurchase;
+    DbPurchase mDbPurchase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expenses);
-        dbPurchase = new DbPurchase(this.getApplicationContext());
-        purchases = dbPurchase.readPurchases();
-        createPieChart(purchases);
+        mDbPurchase = new DbPurchase(this.getApplicationContext());
+        mPurchases = mDbPurchase.readPurchases();
+        createPieChart(mPurchases);
     }
 
     void createPieChart(List<Purchase> purchases) {

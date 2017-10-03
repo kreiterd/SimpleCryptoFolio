@@ -13,12 +13,12 @@ public class DbCryptocurrency {
 
     private static final String TAG = DbPurchase.class.getName();
     private Context mContext;
-    private SimpleCryptoFolioDbHelper simpleCryptoFolioDbHelper;
+    private SimpleCryptoFolioDbHelper mDimpleCryptoFolioDbHelper;
 
 
     public DbCryptocurrency(Context context) {
         this.mContext = context;
-        this.simpleCryptoFolioDbHelper = SimpleCryptoFolioDbHelper.getInstance(context);
+        this.mDimpleCryptoFolioDbHelper = SimpleCryptoFolioDbHelper.getInstance(context);
     }
 
     private static List<Cryptocurrency> extractCryptocurrencys(Cursor cursor) {
@@ -36,7 +36,7 @@ public class DbCryptocurrency {
         String tableName = SimpleCryptoFolioContract.Cryptocurrency.TABLE_NAME;
         String whereClause = SimpleCryptoFolioContract.Cryptocurrency._ID + " = ?";
         String[] whereArgs = {String.valueOf(id)};
-        simpleCryptoFolioDbHelper.deleteFromDatabase(tableName,
+        mDimpleCryptoFolioDbHelper.deleteFromDatabase(tableName,
                 whereClause,
                 whereArgs);
     }
@@ -44,7 +44,7 @@ public class DbCryptocurrency {
     public long writeCryptocurrency(Cryptocurrency cryptocurrency) {
         ContentValues values = new ContentValues();
         values.put(SimpleCryptoFolioContract.Cryptocurrency.COLUMN_NAME_NAME, cryptocurrency.getName());
-        return simpleCryptoFolioDbHelper.writeToDatabase(SimpleCryptoFolioContract.Cryptocurrency.TABLE_NAME, values);
+        return mDimpleCryptoFolioDbHelper.writeToDatabase(SimpleCryptoFolioContract.Cryptocurrency.TABLE_NAME, values);
     }
 
     public List<Cryptocurrency> readCryptocurrencyies() {
@@ -52,7 +52,7 @@ public class DbCryptocurrency {
         String tableName = SimpleCryptoFolioContract.Cryptocurrency.TABLE_NAME;
         String[] tableColums = SimpleCryptoFolioContract.Cryptocurrency.TABLE_COLUMN_NAMES;
 
-        Cursor cursor = simpleCryptoFolioDbHelper.readFromDatabase(
+        Cursor cursor = mDimpleCryptoFolioDbHelper.readFromDatabase(
                 tableName,
                 tableColums,
                 null,
@@ -72,7 +72,7 @@ public class DbCryptocurrency {
         String whereClause = SimpleCryptoFolioContract.Cryptocurrency._ID + " = ?";
         String[] whereArgs = {Long.toString(id)};
 
-        Cursor cursor = simpleCryptoFolioDbHelper.readFromDatabase(tableName,
+        Cursor cursor = mDimpleCryptoFolioDbHelper.readFromDatabase(tableName,
                 tableColums,
                 whereClause,
                 whereArgs,
@@ -92,7 +92,7 @@ public class DbCryptocurrency {
         String whereClause = SimpleCryptoFolioContract.Cryptocurrency.COLUMN_NAME_NAME + " = ?";
         String[] whereArgs = {name};
 
-        Cursor cursor = simpleCryptoFolioDbHelper.readFromDatabase(tableName,
+        Cursor cursor = mDimpleCryptoFolioDbHelper.readFromDatabase(tableName,
                 tableColums,
                 whereClause,
                 whereArgs,

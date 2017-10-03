@@ -11,17 +11,17 @@ import danielkreiter.simplecryptofolio.UI.Activity.ISendDataToActivity;
 
 public class LoadCurrencyPriceToActivityATask extends AsyncTask<String, String, JSONObject> {
 
-    private ISendDataToActivity iSendDataToActivity;
-    private String sourceCurrencyTag;
+    private ISendDataToActivity mISendDataToActivity;
+    private String mSsourceCurrencyTag;
 
     public LoadCurrencyPriceToActivityATask(String sourceCurrencyTag, Activity activity) {
-        this.iSendDataToActivity = (ISendDataToActivity) activity;
-        this.sourceCurrencyTag = sourceCurrencyTag;
+        this.mISendDataToActivity = (ISendDataToActivity) activity;
+        this.mSsourceCurrencyTag = sourceCurrencyTag;
     }
 
     @Override
     protected void onPreExecute() {
-        iSendDataToActivity.preExecuteUpdateView();
+        mISendDataToActivity.preExecuteUpdateView();
     }
 
     @Override
@@ -29,8 +29,8 @@ public class LoadCurrencyPriceToActivityATask extends AsyncTask<String, String, 
         CryptocurrencyDataProvider cryptocurrencyDataProvider = new CryptocurrencyDataProvider();
         JSONObject result = new JSONObject();
         try {
-            result.put(this.sourceCurrencyTag, Double.toString(cryptocurrencyDataProvider
-                    .getCurrencyPrice(this.sourceCurrencyTag, "EUR")));
+            result.put(this.mSsourceCurrencyTag, Double.toString(cryptocurrencyDataProvider
+                    .getCurrencyPrice(this.mSsourceCurrencyTag, "EUR")));
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -41,6 +41,6 @@ public class LoadCurrencyPriceToActivityATask extends AsyncTask<String, String, 
 
     @Override
     protected void onPostExecute(JSONObject result) {
-        iSendDataToActivity.postExecuteUpdateView(result);
+        mISendDataToActivity.postExecuteUpdateView(result);
     }
 }

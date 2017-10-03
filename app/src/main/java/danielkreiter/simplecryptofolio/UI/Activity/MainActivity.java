@@ -17,8 +17,8 @@ import danielkreiter.simplecryptofolio.R;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DbPurchase dbPurchase;
-    private DbCryptocurrency dbCryptocurrency;
+    private DbPurchase mDbPurchase;
+    private DbCryptocurrency mDbCryptocurrency;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         Stetho.initializeWithDefaults(this);
 
 
-        this.dbPurchase = new DbPurchase(this.getApplicationContext());
-        this.dbCryptocurrency = new DbCryptocurrency(this.getApplicationContext());
+        this.mDbPurchase = new DbPurchase(this.getApplicationContext());
+        this.mDbCryptocurrency = new DbCryptocurrency(this.getApplicationContext());
 
         // write some samples into the database
         writeExamplePurchases();
@@ -46,8 +46,8 @@ public class MainActivity extends AppCompatActivity {
         cryptocurrency1.setName("ETH");
         Cryptocurrency cryptocurrency2 = new Cryptocurrency();
         cryptocurrency2.setName("BTC");
-        dbCryptocurrency.writeCryptocurrency(cryptocurrency1);
-        dbCryptocurrency.writeCryptocurrency(cryptocurrency2);
+        mDbCryptocurrency.writeCryptocurrency(cryptocurrency1);
+        mDbCryptocurrency.writeCryptocurrency(cryptocurrency2);
 
     }
 
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         p1.setPricepercoin(2);
         p1.setValue(105);
         p1.setDate("08.08.20");
-        long l = dbPurchase.writePurchase(p1);
+        long l = mDbPurchase.writePurchase(p1);
         long id = l;
         Toast.makeText(getApplicationContext(), "Written: " + id, Toast.LENGTH_LONG).show();
 
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         p2.setPricepercoin(200);
         p2.setValue(205);
         p2.setDate("06.08.20");
-        id = dbPurchase.writePurchase(p2);
+        id = mDbPurchase.writePurchase(p2);
         Toast.makeText(getApplicationContext(), "Written: " + id, Toast.LENGTH_LONG).show();
 
         Purchase p3 = new Purchase();
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
         p3.setPricepercoin(2000);
         p3.setValue(205);
         p3.setDate("04.08.20");
-        id = dbPurchase.writePurchase(p3);
+        id = mDbPurchase.writePurchase(p3);
         Toast.makeText(getApplicationContext(), "Written: " + id, Toast.LENGTH_LONG).show();
     }
 

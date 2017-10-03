@@ -11,33 +11,33 @@ import java.util.Calendar;
 import java.util.TimeZone;
 
 public class EditTextDatePicker implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
-    EditText editText;
-    Calendar calendar;
-    private int day;
-    private int month;
-    private int birthYear;
-    private Context context;
+    EditText mEditText;
+    Calendar mCalendar;
+    private int mDay;
+    private int mMonth;
+    private int mBirthYear;
+    private Context mContext;
 
     public EditTextDatePicker(Context context, EditText editTextView) {
         editTextView.setFocusable(false);
-        this.editText = editTextView;
-        this.editText.setOnClickListener(this);
-        this.context = context;
-        this.calendar = Calendar.getInstance();
+        this.mEditText = editTextView;
+        this.mEditText.setOnClickListener(this);
+        this.mContext = context;
+        this.mCalendar = Calendar.getInstance();
     }
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        birthYear = year;
-        month = monthOfYear;
-        day = dayOfMonth;
+        mBirthYear = year;
+        mMonth = monthOfYear;
+        mDay = dayOfMonth;
         updateView();
     }
 
     @Override
     public void onClick(View v) {
         Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
-        DatePickerDialog dialog = new DatePickerDialog(context, this,
+        DatePickerDialog dialog = new DatePickerDialog(mContext, this,
                 calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),
                 calendar.get(Calendar.DAY_OF_MONTH));
         dialog.show();
@@ -45,7 +45,7 @@ public class EditTextDatePicker implements View.OnClickListener, DatePickerDialo
 
 
     private void updateView() {
-        editText.setText(new StringBuilder().append(day).append(".").append(month + 1)
-                .append(".").append(birthYear).append(" "));
+        mEditText.setText(new StringBuilder().append(mDay).append(".").append(mMonth + 1)
+                .append(".").append(mBirthYear).append(" "));
     }
 }

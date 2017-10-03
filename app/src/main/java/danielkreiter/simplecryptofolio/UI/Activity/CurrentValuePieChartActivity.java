@@ -27,25 +27,24 @@ import danielkreiter.simplecryptofolio.UI.PieChartValueFormatter;
 public class CurrentValuePieChartActivity extends AppCompatActivity implements ISendDataToActivity {
 
 
-    DbPurchase dbPurchase;
-    PieChart chart;
-    Map<String, Double> totalAmount;
-    List<Integer> colors;
-    List<PieEntry> entries;
-    List<Purchase> purchases;
-
-    PieDataSet dataSet;
+    DbPurchase mDbPurchase;
+    PieChart mChart;
+    Map<String, Double> mTotalAmount;
+    List<Integer> mColors;
+    List<PieEntry> mEntries;
+    List<Purchase> mPurchases;
+    PieDataSet mDataSet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_value_pie_chart);
-        dbPurchase = new DbPurchase(this.getApplicationContext());
-        chart = findViewById(R.id.chart);
-        totalAmount = new HashMap<>();
-        colors = new ArrayList<>();
-        entries = new ArrayList<>();
-        purchases = dbPurchase.readPurchases();
+        mDbPurchase = new DbPurchase(this.getApplicationContext());
+        mChart = findViewById(R.id.chart);
+        mTotalAmount = new HashMap<>();
+        mColors = new ArrayList<>();
+        mEntries = new ArrayList<>();
+        mPurchases = mDbPurchase.readPurchases();
         createCurrentValueChart();
     }
 
@@ -53,7 +52,7 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
     void loadCurrencyData() {
 
 
-        Iterator it = totalAmount.entrySet().iterator();
+        Iterator it = mTotalAmount.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry) it.next();
             String key = pair.getKey().toString();
@@ -67,28 +66,28 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
 
 
     void createCurrentValueChart() {
-        for (Purchase purchase : purchases) {
-            if (totalAmount.containsKey(purchase.getCurrencytype())) {
-                totalAmount.put(purchase.getCurrencytype(), totalAmount.get(purchase.getCurrencytype()) + purchase.getAmount());
+        for (Purchase purchase : mPurchases) {
+            if (mTotalAmount.containsKey(purchase.getCurrencytype())) {
+                mTotalAmount.put(purchase.getCurrencytype(), mTotalAmount.get(purchase.getCurrencytype()) + purchase.getAmount());
             } else {
-                totalAmount.put(purchase.getCurrencytype(), purchase.getAmount());
+                mTotalAmount.put(purchase.getCurrencytype(), purchase.getAmount());
             }
         }
 
 
         // create the dataSet
-        dataSet = new PieDataSet(entries, "Label");
-        dataSet.setColors(colors);
-        dataSet.setValueTextSize(12f);
-        dataSet.setValueTextColor(Color.WHITE);
+        mDataSet = new PieDataSet(mEntries, "Label");
+        mDataSet.setColors(mColors);
+        mDataSet.setValueTextSize(12f);
+        mDataSet.setValueTextColor(Color.WHITE);
 
         // build the pieChart
-        PieData pieData = new PieData(dataSet);
+        PieData pieData = new PieData(mDataSet);
         pieData.setValueFormatter(new PieChartValueFormatter());
-        chart.setData(pieData);
+        mChart.setData(pieData);
 
         // refresh the pieChart
-        chart.invalidate();
+        mChart.invalidate();
         loadCurrencyData();
 
     }
@@ -104,9 +103,9 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
             String key = iter.next();
             try {
                 PieEntry pieEntry = new PieEntry((float) result.getDouble(key), key);
-                dataSet.addEntry(pieEntry);
-                chart.notifyDataSetChanged(); // let the chart know it's data changed
-                chart.invalidate(); // refresh
+                mDataSet.addEntry(pieEntry);
+                mChart.notifyDataSetChanged(); // let the chart know it's data changed
+                mChart.invalidate(); // refresh
             } catch (JSONException e) {
                 // Something went wrong!
             }
