@@ -29,6 +29,10 @@
         <activity
             android:name=".UI.Activity.OverviewActivity"
             android:label="@string/title_activity_overview"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".UI.Activity.CurrentValuePieChartActivity"
+            android:label="@string/title_activity_current_value_pie_chart"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

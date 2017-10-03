@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
     void writeExamplePurchases() {
         Purchase p1 = new Purchase();
-        p1.setCurrencytype("Stratis");
+        p1.setCurrencytype("STRAT");
         p1.setAmount(50.0);
         p1.setPricepercoin(2);
         p1.setValue(105);
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Written: " + id, Toast.LENGTH_LONG).show();
 
         Purchase p2 = new Purchase();
-        p2.setCurrencytype("Ethereum");
+        p2.setCurrencytype("ETH");
         p2.setAmount(1.0);
         p2.setPricepercoin(200);
         p2.setValue(205);
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), "Written: " + id, Toast.LENGTH_LONG).show();
 
         Purchase p3 = new Purchase();
-        p3.setCurrencytype("Bitcoin");
+        p3.setCurrencytype("BTC");
         p3.setAmount(0.10);
         p3.setPricepercoin(2000);
         p3.setValue(205);

@@ -4,4 +4,5 @@
     <string name="title_activity_expenses">ExpensesActivity</string>
     <string name="title_activity_purchase_input">PurchaseInputActivity</string>
     <string name="title_activity_overview">OverviewActivity</string>
+    <string name="title_activity_current_value_pie_chart">CurrentValuePieChartActivity</string>
 </resources>

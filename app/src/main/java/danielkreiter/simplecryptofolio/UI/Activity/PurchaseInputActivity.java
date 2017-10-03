@@ -9,8 +9,12 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
+import danielkreiter.simplecryptofolio.CryptocurrencyData.CryptoCompareApiWrapper;
 import danielkreiter.simplecryptofolio.Database.DbCryptocurrency;
 import danielkreiter.simplecryptofolio.Database.DbPurchase;
 import danielkreiter.simplecryptofolio.Model.Cryptocurrency;
@@ -32,6 +36,7 @@ public class PurchaseInputActivity extends AppCompatActivity implements ISendDat
     private DbPurchase dbPurchase;
     private DbCryptocurrency dbCryptocurrency;
     private List<Cryptocurrency> mCryptocurrencies;
+    private String currencyname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +66,7 @@ public class PurchaseInputActivity extends AppCompatActivity implements ISendDat
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.loadCurrencyData_button:
-                String currencyname = this.currencytype.getText().toString();
+                currencyname = this.currencytype.getText().toString();
                 if (dbCryptocurrency.readCryptocurrency(currencyname) == null) {
                     Cryptocurrency cryptocurrency = new Cryptocurrency(currencyname);
                     dbCryptocurrency.writeCryptocurrency(cryptocurrency);
@@ -98,9 +103,20 @@ public class PurchaseInputActivity extends AppCompatActivity implements ISendDat
     }
 
     @Override
-    public void postExecuteUpdateView(String str) {
+    public void postExecuteUpdateView(JSONObject result) {
         progressBar.setVisibility(View.INVISIBLE);
-        coindata.setText(str);
+        if (result.has(this.currencyname)) {
+            if (!result.has(this.currencyname)) {
+                coindata.setText(CryptoCompareApiWrapper.NO_DATA_AVAILABLE);
+            } else {
+                try {
+
+                    coindata.setText(currencyname + ": " + String.valueOf(result.getDouble(currencyname)));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override

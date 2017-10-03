@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="danielkreiter.simplecryptofolio.UI.Activity.ExpensesActivity">
+    tools:context="danielkreiter.simplecryptofolio.UI.Activity.CurrentValuePieChartActivity">
 
 
     <LinearLayout
@@ -17,7 +17,7 @@
         android:weightSum="2">
 
         <Button
-            android:id="@+id/buyvalue_button"
+            android:id="@+id/b1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -29,7 +29,7 @@
 
 
         <Button
-            android:id="@+id/currentvalue_button"
+            android:id="@+id/b2"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

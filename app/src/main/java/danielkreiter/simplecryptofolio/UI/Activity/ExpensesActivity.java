@@ -1,8 +1,10 @@
 package danielkreiter.simplecryptofolio.UI.Activity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -26,11 +28,13 @@ public class ExpensesActivity extends AppCompatActivity {
 
     List<Purchase> purchases;
 
+    DbPurchase dbPurchase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expenses);
-        DbPurchase dbPurchase = new DbPurchase(this.getApplicationContext());
+        dbPurchase = new DbPurchase(this.getApplicationContext());
         purchases = dbPurchase.readPurchases();
         createPieChart(purchases);
     }
@@ -76,9 +80,23 @@ public class ExpensesActivity extends AppCompatActivity {
         chart.invalidate();
     }
 
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         this.finish();
     }
+
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.buyvalue_button:
+                startActivity(new Intent(this, PurchaseInputActivity.class));
+                break;
+            case R.id.currentvalue_button:
+                break;
+
+        }
+    }
+
 }
