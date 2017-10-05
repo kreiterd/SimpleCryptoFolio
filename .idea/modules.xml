@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/SimpleCryptoFolio.iml" filepath="$PROJECT_DIR$/SimpleCryptoFolio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/SimpleCryptoFolio.iml" filepath="$PROJECT_DIR$/.idea/SimpleCryptoFolio.iml" />
+      <module fileurl="file://C:\Users\shrax\StudioProjects\SimpleCryptoFolio\SimpleCryptoFolio.iml" filepath="C:\Users\shrax\StudioProjects\SimpleCryptoFolio\SimpleCryptoFolio.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://C:\Users\shrax\StudioProjects\SimpleCryptoFolio\app\app.iml" filepath="C:\Users\shrax\StudioProjects\SimpleCryptoFolio\app\app.iml" />
     </modules>
   </component>
 </project>

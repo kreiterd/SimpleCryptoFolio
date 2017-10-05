@@ -29,7 +29,6 @@ import danielkreiter.simplecryptofolio.UI.PieChartValueFormatter;
 public class CurrentValuePieChartActivity extends AppCompatActivity implements ISendDataToActivity {
 
 
-    DbPurchase mDbPurchase;
     PieChart mChart;
     Map<String, Double> mTotalAmount;
     List<Integer> mColors;
@@ -41,36 +40,38 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_value_pie_chart);
-        mDbPurchase = new DbPurchase(this.getApplicationContext());
+
         mChart = findViewById(R.id.chart);
         mTotalAmount = new HashMap<>();
         mColors = new ArrayList<>();
         mEntries = new ArrayList<>();
-        mPurchases = mDbPurchase.readPurchases();
+
+        mPurchases = (new DbPurchase(this.getApplicationContext())).readPurchases();
+
         createCurrentValueChart();
+        loadCurrencyData();
     }
 
 
     void loadCurrencyData() {
 
+        // Add up the values of all purchases for each separate currency
+        // ToDo: save the whole amount for each currency in the database
         for (Purchase purchase : mPurchases) {
-            if (mTotalAmount.containsKey(purchase.getCurrencytype())) {
-                mTotalAmount.put(purchase.getCurrencytype(), mTotalAmount.get(purchase.getCurrencytype()) + purchase.getAmount());
-            } else {
-                mTotalAmount.put(purchase.getCurrencytype(), purchase.getAmount());
-            }
+
+            String currencyName = purchase.getCurrencytype();
+            Double amount = purchase.getAmount();
+
+            if (mTotalAmount.containsKey(currencyName))
+                mTotalAmount.put(currencyName, mTotalAmount.get(currencyName) + amount);
+            else
+                mTotalAmount.put(currencyName, amount);
+
         }
 
-        Iterator it = mTotalAmount.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry pair = (Map.Entry) it.next();
-            String key = pair.getKey().toString();
-
-            LoadCurrencyPriceToActivityATask loadCurrencyPriceToActivityATask
-                    = new LoadCurrencyPriceToActivityATask(key, this);
-            loadCurrencyPriceToActivityATask.execute();
-        }
-
+        // load the actual value of each currency and pass the results to postExecuteUpdateView(...)
+        for (Map.Entry<String, Double> entry : mTotalAmount.entrySet())
+            (new LoadCurrencyPriceToActivityATask(entry.getKey(), this)).execute();
     }
 
 
@@ -79,7 +80,8 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
 
         // create the dataSet
         mDataSet = new PieDataSet(mEntries, "Label");
-        //mDataSet.setColors(mColors);
+
+        // chart settings
         mDataSet.setValueTextSize(12f);
         mDataSet.setValueTextColor(Color.WHITE);
 
@@ -90,7 +92,6 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
 
         // refresh the pieChart
         mChart.invalidate();
-        loadCurrencyData();
 
     }
 
@@ -100,20 +101,19 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
 
 
         Iterator<String> iter = result.keys();
-
         while (iter.hasNext()) {
             String key = iter.next();
             try {
                 PieEntry pieEntry = new PieEntry((float) result.getDouble(key) * this.mTotalAmount.get(key).floatValue(), key);
-
                 mDataSet.addEntry(pieEntry);
+                // ToDo: let users choose their own color
                 Random rnd = new Random();
                 int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
                 mDataSet.addColor(color);
                 mChart.notifyDataSetChanged(); // let the chart know it's data changed
                 mChart.invalidate(); // refresh
             } catch (JSONException e) {
-                // Something went wrong!
+                // ToDo: handle exceptions! don't leave this empty!
             }
         }
 
