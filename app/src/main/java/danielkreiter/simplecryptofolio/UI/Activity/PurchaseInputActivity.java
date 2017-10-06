@@ -21,7 +21,6 @@ import danielkreiter.simplecryptofolio.Model.Cryptocurrency;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
 import danielkreiter.simplecryptofolio.UI.EditTextDatePicker;
-import danielkreiter.simplecryptofolio.UI.LoadCurrencyPriceToActivityATask;
 
 public class PurchaseInputActivity extends AppCompatActivity implements ISendDataToActivity {
 
@@ -76,9 +75,9 @@ public class PurchaseInputActivity extends AppCompatActivity implements ISendDat
                     mCurrencytype.setAdapter(adapter);
                 }
 
-                LoadCurrencyPriceToActivityATask loadCurrencyPriceToActivityATask
-                        = new LoadCurrencyPriceToActivityATask(mCurrencyname, this);
-                loadCurrencyPriceToActivityATask.execute();
+                //  LoadCurrencyPriceToActivityATask loadCurrencyPriceToActivityATask
+                //         = new LoadCurrencyPriceToActivityATask(mCurrencyname, this);
+                // loadCurrencyPriceToActivityATask.execute();
                 break;
             case R.id.safe_button:
                 safeData();

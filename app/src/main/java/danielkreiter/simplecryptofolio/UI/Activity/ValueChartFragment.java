@@ -2,8 +2,10 @@ package danielkreiter.simplecryptofolio.UI.Activity;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -23,34 +25,60 @@ import java.util.Random;
 import danielkreiter.simplecryptofolio.Database.DbPurchase;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
+import danielkreiter.simplecryptofolio.UI.LoadCurrencyPriceToActivityATask;
 import danielkreiter.simplecryptofolio.UI.PieChartValueFormatter;
 
-public class CurrentValuePieChartActivity extends AppCompatActivity implements ISendDataToActivity {
-
-
+public class ValueChartFragment extends Fragment implements ISendDataToActivity {
+    public static final String ARG_PAGE = "ARG_PAGE";
     PieChart mChart;
     Map<String, Double> mTotalAmount;
     List<Integer> mColors;
     List<PieEntry> mEntries;
     List<Purchase> mPurchases;
     PieDataSet mDataSet;
+    private int mPage;
+
+    public static ValueChartFragment newInstance(int page) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_PAGE, page);
+        ValueChartFragment fragment = new ValueChartFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_current_value_pie_chart);
+        mPage = getArguments().getInt(ARG_PAGE);
 
-        mChart = findViewById(R.id.chart);
+
         mTotalAmount = new HashMap<>();
         mColors = new ArrayList<>();
         mEntries = new ArrayList<>();
 
-        mPurchases = (new DbPurchase(this.getApplicationContext())).readPurchases();
 
-        createCurrentValueChart();
-        loadCurrencyData();
     }
 
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_value_chart, container, false);
+        mChart = view.findViewById(R.id.chart);
+
+
+        return view;
+    }
+
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        // setRetainInstance(true);
+        createCurrentValueChart();
+        mPurchases = (new DbPurchase(getActivity())).readPurchases();
+
+        loadCurrencyData();
+    }
 
     void loadCurrencyData() {
 
@@ -69,8 +97,8 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
         }
 
         // load the actual value of each currency and pass the results to postExecuteUpdateView(...)
-        // for (Map.Entry<String, Double> entry : mTotalAmount.entrySet())
-        //    (new LoadCurrencyPriceToActivityATask(entry.getKey(), this)).execute();
+        for (Map.Entry<String, Double> entry : mTotalAmount.entrySet())
+            (new LoadCurrencyPriceToActivityATask(entry.getKey(), this)).execute();
     }
 
 
@@ -121,8 +149,5 @@ public class CurrentValuePieChartActivity extends AppCompatActivity implements I
     @Override
     public void preExecuteUpdateView() {
 
-    }
-
-    public void onClick(View view) {
     }
 }

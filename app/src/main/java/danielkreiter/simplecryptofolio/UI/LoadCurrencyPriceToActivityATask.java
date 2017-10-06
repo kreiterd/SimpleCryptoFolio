@@ -1,7 +1,7 @@
 package danielkreiter.simplecryptofolio.UI;
 
-import android.app.Activity;
 import android.os.AsyncTask;
+import android.support.v4.app.Fragment;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,8 +14,8 @@ public class LoadCurrencyPriceToActivityATask extends AsyncTask<String, String, 
     private ISendDataToActivity mISendDataToActivity;
     private String mSsourceCurrencyTag;
 
-    public LoadCurrencyPriceToActivityATask(String sourceCurrencyTag, Activity activity) {
-        this.mISendDataToActivity = (ISendDataToActivity) activity;
+    public LoadCurrencyPriceToActivityATask(String sourceCurrencyTag, Fragment fragment) {
+        this.mISendDataToActivity = (ISendDataToActivity) fragment;
         this.mSsourceCurrencyTag = sourceCurrencyTag;
     }
 

@@ -1,0 +1,28 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="danielkreiter.simplecryptofolio.UI.Activity.ValueChartFragment">
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:layout_marginBottom="8dp"
+
+        android:layout_marginTop="60dp"
+        android:orientation="horizontal"
+        android:padding="6dp"
+        android:weightSum="2"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-139dp">
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
