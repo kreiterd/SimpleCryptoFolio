@@ -3,6 +3,7 @@ package danielkreiter.simplecryptofolio.UI.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import danielkreiter.simplecryptofolio.UI.PieChartValueFormatter;
 
 public class ValueChartFragment extends Fragment implements ISendDataToActivity {
     public static final String ARG_PAGE = "ARG_PAGE";
+    public static final String TAG = "ValueChartFragment";
     PieChart mChart;
     Map<String, Double> mTotalAmount;
     List<Integer> mColors;
@@ -49,6 +51,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate called.");
         mPage = getArguments().getInt(ARG_PAGE);
 
 
@@ -66,21 +69,23 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
         View view = inflater.inflate(R.layout.fragment_value_chart, container, false);
         mChart = view.findViewById(R.id.chart);
 
-
+        Log.i(TAG, "onCreateView called.");
         return view;
     }
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-
+        Log.i(TAG, "onActivityCreated called.");
         // setRetainInstance(true);
         createCurrentValueChart();
-        mPurchases = (new DbPurchase(getActivity())).readPurchases();
 
         loadCurrencyData();
     }
 
     void loadCurrencyData() {
+        mPurchases = (new DbPurchase(getActivity())).readPurchases();
+        mTotalAmount.clear();
+        mChart.clear();
 
         // Add up the values of all purchases for each separate currency
         // ToDo: save the whole amount for each currency in the database
@@ -95,6 +100,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
                 mTotalAmount.put(currencyName, amount);
 
         }
+
 
         // load the actual value of each currency and pass the results to postExecuteUpdateView(...)
         for (Map.Entry<String, Double> entry : mTotalAmount.entrySet())
