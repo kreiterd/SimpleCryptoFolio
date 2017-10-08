@@ -5,7 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
 
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         p1.setDate("08.08.20");
         long l = mDbPurchase.writePurchase(p1);
         long id = l;
-        Toast.makeText(getApplicationContext(), "Written: " + id, Toast.LENGTH_LONG).show();
+
 
         Purchase p2 = new Purchase();
         p2.setCurrencytype("ETH");
@@ -84,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
         p2.setValue(205);
         p2.setDate("06.08.20");
         id = mDbPurchase.writePurchase(p2);
-        Toast.makeText(getApplicationContext(), "Written: " + id, Toast.LENGTH_LONG).show();
+
 
         Purchase p3 = new Purchase();
         p3.setCurrencytype("BTC");
@@ -93,22 +92,19 @@ public class MainActivity extends AppCompatActivity {
         p3.setValue(205);
         p3.setDate("04.08.20");
         id = mDbPurchase.writePurchase(p3);
-        Toast.makeText(getApplicationContext(), "Written: " + id, Toast.LENGTH_LONG).show();
+
+        Purchase p4 = new Purchase();
+        p4.setCurrencytype("IOT");
+        p4.setAmount(20);
+        p4.setPricepercoin(0.50);
+        p4.setValue(205);
+        p4.setDate("09.08.20");
+        id = mDbPurchase.writePurchase(p4);
     }
 
 
     public void onClick(View v) {
         switch (v.getId()) {
-            /*case R.id.expenses:
-                Intent goToNextActivity = new Intent(getApplicationContext(), ExpensesActivity.class);
-                startActivity(goToNextActivity);
-                break;
-            case R.id.button_purchaseInputActivity:
-                startActivity(new Intent(this, PurchaseInputActivity.class));
-                break;
-            case R.id.overview:
-                startActivity(new Intent(this, OverviewActivity.class));
-                break;*/
         }
     }
 

@@ -1,12 +1,14 @@
 package danielkreiter.simplecryptofolio.UI.Activity;
 
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -33,11 +35,13 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String TAG = "ValueChartFragment";
     PieChart mChart;
+    ProgressBar progressBar;
     Map<String, Double> mTotalAmount;
     List<Integer> mColors;
     List<PieEntry> mEntries;
     List<Purchase> mPurchases;
     PieDataSet mDataSet;
+    private ArrayList<LoadCurrencyPriceToActivityATask> mLoadCurrencyTasks;
     private int mPage;
 
     public static ValueChartFragment newInstance(int page) {
@@ -54,7 +58,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
         Log.i(TAG, "onCreate called.");
         mPage = getArguments().getInt(ARG_PAGE);
 
-
+        mLoadCurrencyTasks = new ArrayList<>();
         mTotalAmount = new HashMap<>();
         mColors = new ArrayList<>();
         mEntries = new ArrayList<>();
@@ -68,6 +72,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_value_chart, container, false);
         mChart = view.findViewById(R.id.chart);
+        progressBar = view.findViewById(R.id.loading_progressbar);
 
         Log.i(TAG, "onCreateView called.");
         return view;
@@ -83,9 +88,12 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
     }
 
     void loadCurrencyData() {
+        mChart.setVisibility(View.INVISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         mPurchases = (new DbPurchase(getActivity())).readPurchases();
         mTotalAmount.clear();
-        mChart.clear();
+        mEntries.clear();
+        createCurrentValueChart();
 
         // Add up the values of all purchases for each separate currency
         // ToDo: save the whole amount for each currency in the database
@@ -103,8 +111,11 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
 
 
         // load the actual value of each currency and pass the results to postExecuteUpdateView(...)
-        for (Map.Entry<String, Double> entry : mTotalAmount.entrySet())
-            (new LoadCurrencyPriceToActivityATask(entry.getKey(), this)).execute();
+        for (Map.Entry<String, Double> entry : mTotalAmount.entrySet()) {
+            LoadCurrencyPriceToActivityATask loadCurrencyPriceToActivityATask = new LoadCurrencyPriceToActivityATask(entry.getKey(), this);
+            loadCurrencyPriceToActivityATask.execute();
+            mLoadCurrencyTasks.add(loadCurrencyPriceToActivityATask);
+        }
     }
 
 
@@ -148,6 +159,20 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
             } catch (JSONException e) {
                 // ToDo: handle exceptions! don't leave this empty!
             }
+        }
+
+        int taskCounter = 1;
+        for (LoadCurrencyPriceToActivityATask loadCurrencyPriceToActivityATask : mLoadCurrencyTasks) {
+            if ((loadCurrencyPriceToActivityATask.getStatus() == AsyncTask.Status.FINISHED)) {
+                taskCounter++;
+            }
+        }
+        int p = 100 / mLoadCurrencyTasks.size();
+
+        progressBar.setProgress(p * taskCounter);
+        if (taskCounter == mLoadCurrencyTasks.size()) {
+            mChart.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.INVISIBLE);
         }
 
     }

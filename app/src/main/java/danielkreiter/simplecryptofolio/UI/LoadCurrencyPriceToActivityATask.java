@@ -36,6 +36,11 @@ public class LoadCurrencyPriceToActivityATask extends AsyncTask<String, String, 
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
