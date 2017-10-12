@@ -1,5 +1,6 @@
 package danielkreiter.simplecryptofolio.UI.Activity;
 
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -36,6 +38,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
     public static final String TAG = "ValueChartFragment";
     PieChart mChart;
     ProgressBar progressBar;
+    TextView mLoadingATextView;
     Map<String, Double> mTotalAmount;
     List<Integer> mColors;
     List<PieEntry> mEntries;
@@ -73,6 +76,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
         View view = inflater.inflate(R.layout.fragment_value_chart, container, false);
         mChart = view.findViewById(R.id.chart);
         progressBar = view.findViewById(R.id.loading_progressbar);
+        mLoadingATextView = view.findViewById(R.id.loading_textview);
 
         Log.i(TAG, "onCreateView called.");
         return view;
@@ -170,7 +174,11 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
         int p = 100 / mLoadCurrencyTasks.size();
 
         progressBar.setProgress(p * taskCounter);
+        Resources res = getResources();
+        String loadCurrencyData = res.getString(R.string.load_currency_data);
+        mLoadingATextView.setText(loadCurrencyData + "" + p * taskCounter + "%");
         if (taskCounter == mLoadCurrencyTasks.size()) {
+            mLoadingATextView.setText(loadCurrencyData + "100%");
             mChart.setVisibility(View.VISIBLE);
             progressBar.setVisibility(View.INVISIBLE);
         }
