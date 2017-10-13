@@ -110,6 +110,26 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
             }
         });
 
+        mCurrencytype.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    mCurrencyname = mCurrencytype.getText().toString();
+                    if (mDbCryptocurrency.readCryptocurrency(mCurrencyname) == null) {
+                        Cryptocurrency cryptocurrency = new Cryptocurrency(mCurrencyname);
+                        mDbCryptocurrency.writeCryptocurrency(cryptocurrency);
+                        mCryptocurrencies.add(cryptocurrency);
+                        adapter.add(cryptocurrency);
+                        mCurrencytype.setAdapter(adapter);
+                    }
+                    LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask
+                            = new LoadCurrencyPriceToFragmentATask(mCurrencyname, AddPurchaseFragment.this
+                    );
+                    loadCurrencyPriceToFragmentATask.execute();
+                }
+            }
+        });
+
 
         Button safeButton = view.findViewById(R.id.safe_button);
         safeButton.setOnClickListener(new View.OnClickListener() {
