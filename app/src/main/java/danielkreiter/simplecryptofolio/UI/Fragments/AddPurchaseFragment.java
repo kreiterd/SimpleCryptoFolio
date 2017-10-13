@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -51,6 +52,7 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
     private DbCryptocurrency mDbCryptocurrency;
     private List<Cryptocurrency> mCryptocurrencies;
     private String mCurrencyname;
+    private ImageButton mLoadDataButton;
 
 
     /**
@@ -91,8 +93,8 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
         this.mCoindata = view.findViewById(R.id.coindata_textview);
 
 
-        Button loadCurrencyButton = view.findViewById(R.id.loadCurrencyData_button);
-        loadCurrencyButton.setOnClickListener(new View.OnClickListener() {
+        mLoadDataButton = view.findViewById(R.id.loadCurrencyData_button);
+        mLoadDataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mCurrencyname = mCurrencytype.getText().toString();
@@ -172,6 +174,7 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
     @Override
     public void postExecuteUpdateView(JSONObject result) {
         mProgressBar.setVisibility(View.INVISIBLE);
+        mLoadDataButton.setVisibility(View.VISIBLE);
         if (result.has(this.mCurrencyname)) {
             if (!result.has(this.mCurrencyname)) {
                 mCoindata.setText(CryptoCompareApiWrapper.NO_DATA_AVAILABLE);
@@ -188,6 +191,7 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
 
     @Override
     public void preExecuteUpdateView() {
+        mLoadDataButton.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
     }
 
