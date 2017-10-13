@@ -6,12 +6,13 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import danielkreiter.simplecryptofolio.UI.Activity.AddPurchaseFragment;
+import danielkreiter.simplecryptofolio.UI.Activity.AllPurchasesFragment;
 import danielkreiter.simplecryptofolio.UI.Activity.BasicFragment;
 import danielkreiter.simplecryptofolio.UI.Activity.ValueChartFragment;
 
 public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[]{"Übersicht", "Tab2", "Tab3"};
+    private String tabTitles[] = new String[]{"Übersicht", "Add", "Delete"};
     private Context context;
 
     public TabFragmentPagerAdapter(FragmentManager fm, Context context) {
@@ -34,6 +35,8 @@ public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
                 return ValueChartFragment.newInstance(position + 1);
             case 1:
                 return AddPurchaseFragment.newInstance(position + 1);
+            case 2:
+                return AllPurchasesFragment.newInstance(position + 1);
             default:
                 return BasicFragment.newInstance(position + 1);
 
