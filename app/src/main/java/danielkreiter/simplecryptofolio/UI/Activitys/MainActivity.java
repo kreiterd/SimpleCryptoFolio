@@ -16,11 +16,19 @@ import danielkreiter.simplecryptofolio.R;
 import danielkreiter.simplecryptofolio.UI.Adapter.TabFragmentPagerAdapter;
 
 
+/**
+ * Main activity.
+ */
 public class MainActivity extends AppCompatActivity {
 
     private DbPurchase mDbPurchase;
     private DbCryptocurrency mDbCryptocurrency;
 
+    /**
+     * onCreate
+     *
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Write example cryptocurrencies.
+     */
     void writeExampleCryptocurrencies() {
         Cryptocurrency cryptocurrency1 = new Cryptocurrency();
         cryptocurrency1.setName("ETH");
@@ -65,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Write example purchases.
+     */
     void writeExamplePurchases() {
         Purchase p1 = new Purchase();
         p1.setCurrencytype("STRAT");

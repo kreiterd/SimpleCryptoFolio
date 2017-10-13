@@ -25,13 +25,19 @@ import danielkreiter.simplecryptofolio.Model.Cryptocurrency;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
 import danielkreiter.simplecryptofolio.UI.EditTextDatePicker;
-import danielkreiter.simplecryptofolio.UI.ISendDataToActivity;
-import danielkreiter.simplecryptofolio.UI.LoadCurrencyPriceToActivityATask;
+import danielkreiter.simplecryptofolio.UI.ISendDataToUI;
+import danielkreiter.simplecryptofolio.UI.LoadCurrencyPriceToFragmentATask;
 
 
-public class AddPurchaseFragment extends Fragment implements ISendDataToActivity {
+/**
+ * The type AddPurchaseFragment
+ */
+public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
+
     public static final String ARG_PAGE = "ARG_PAGE";
+
     public static final String TAG = "AddPurchaseFragment";
+
 
     ArrayAdapter<Cryptocurrency> adapter;
     private ProgressBar mProgressBar;
@@ -47,8 +53,10 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToActivity
     private String mCurrencyname;
 
 
-    private int mPage;
-
+    /**
+     * @param page the page
+     * @return the add purchase fragment
+     */
     public static AddPurchaseFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
@@ -61,9 +69,7 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToActivity
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate called.");
-        mPage = getArguments().getInt(ARG_PAGE);
-
-
+        getArguments().getInt(ARG_PAGE);
     }
 
 
@@ -94,14 +100,13 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToActivity
                     Cryptocurrency cryptocurrency = new Cryptocurrency(mCurrencyname);
                     mDbCryptocurrency.writeCryptocurrency(cryptocurrency);
                     mCryptocurrencies.add(cryptocurrency);
-                    //mAdapter.notifyDataSetChanged();
                     adapter.add(cryptocurrency);
                     mCurrencytype.setAdapter(adapter);
                 }
-                LoadCurrencyPriceToActivityATask loadCurrencyPriceToActivityATask
-                        = new LoadCurrencyPriceToActivityATask(mCurrencyname, AddPurchaseFragment.this
+                LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask
+                        = new LoadCurrencyPriceToFragmentATask(mCurrencyname, AddPurchaseFragment.this
                 );
-                loadCurrencyPriceToActivityATask.execute();
+                loadCurrencyPriceToFragmentATask.execute();
             }
         });
 
@@ -135,7 +140,6 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToActivity
 
 
     public void safeData() {
-
         Purchase purchase = new Purchase();
         purchase.setAmount(Double.parseDouble(mAmount.getText().toString()));
         purchase.setCurrencytype(mCurrencytype.getText().toString());

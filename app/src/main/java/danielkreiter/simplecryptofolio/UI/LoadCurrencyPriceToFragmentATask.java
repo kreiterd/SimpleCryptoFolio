@@ -8,21 +8,36 @@ import org.json.JSONObject;
 
 import danielkreiter.simplecryptofolio.CryptocurrencyData.CryptocurrencyDataProvider;
 
-public class LoadCurrencyPriceToActivityATask extends AsyncTask<String, String, JSONObject> {
+/**
+ * Async-Task to load the data from an API to a activity
+ */
+public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, JSONObject> {
 
-    private ISendDataToActivity mISendDataToActivity;
+    private ISendDataToUI mISendDataToUI;
     private String mSsourceCurrencyTag;
 
-    public LoadCurrencyPriceToActivityATask(String sourceCurrencyTag, Fragment fragment) {
-        this.mISendDataToActivity = (ISendDataToActivity) fragment;
+    /**
+     * Instantiates a Async-Task
+     *
+     * @param sourceCurrencyTag the source currency tag
+     * @param fragment          the fragment
+     */
+    public LoadCurrencyPriceToFragmentATask(String sourceCurrencyTag, Fragment fragment) {
+        this.mISendDataToUI = (ISendDataToUI) fragment;
         this.mSsourceCurrencyTag = sourceCurrencyTag;
     }
 
+    /**
+     * Triggers the preExecute method
+     */
     @Override
     protected void onPreExecute() {
-        mISendDataToActivity.preExecuteUpdateView();
+        mISendDataToUI.preExecuteUpdateView();
     }
 
+    /**
+     * Loading the data
+     */
     @Override
     protected JSONObject doInBackground(String... args) {
         CryptocurrencyDataProvider cryptocurrencyDataProvider = new CryptocurrencyDataProvider();
@@ -39,8 +54,13 @@ public class LoadCurrencyPriceToActivityATask extends AsyncTask<String, String, 
         return result;
     }
 
+    /**
+     * Triggers the postExecute method
+     *
+     * @param result
+     */
     @Override
     protected void onPostExecute(JSONObject result) {
-        mISendDataToActivity.postExecuteUpdateView(result);
+        mISendDataToUI.postExecuteUpdateView(result);
     }
 }

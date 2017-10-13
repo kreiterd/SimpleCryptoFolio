@@ -10,7 +10,11 @@ import android.widget.EditText;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+/**
+ * EditTextPicker
+ */
 public class EditTextDatePicker implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
+
     EditText mEditText;
     Calendar mCalendar;
     private int mDay;
@@ -18,6 +22,12 @@ public class EditTextDatePicker implements View.OnClickListener, DatePickerDialo
     private int mBirthYear;
     private Context mContext;
 
+    /**
+     * Instantiates a new EditTextPicker.
+     *
+     * @param context      the context
+     * @param editTextView the edit text view
+     */
     public EditTextDatePicker(Context context, EditText editTextView) {
         editTextView.setFocusable(false);
         this.mEditText = editTextView;

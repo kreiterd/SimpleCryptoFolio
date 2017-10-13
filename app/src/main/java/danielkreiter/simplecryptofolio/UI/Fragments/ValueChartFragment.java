@@ -30,11 +30,11 @@ import java.util.Random;
 import danielkreiter.simplecryptofolio.Database.DbPurchase;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
-import danielkreiter.simplecryptofolio.UI.ISendDataToActivity;
-import danielkreiter.simplecryptofolio.UI.LoadCurrencyPriceToActivityATask;
+import danielkreiter.simplecryptofolio.UI.ISendDataToUI;
+import danielkreiter.simplecryptofolio.UI.LoadCurrencyPriceToFragmentATask;
 import danielkreiter.simplecryptofolio.UI.PieChartValueFormatter;
 
-public class ValueChartFragment extends Fragment implements ISendDataToActivity {
+public class ValueChartFragment extends Fragment implements ISendDataToUI {
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String TAG = "ValueChartFragment";
     PieChart mChart;
@@ -45,7 +45,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
     List<PieEntry> mEntries;
     List<Purchase> mPurchases;
     PieDataSet mDataSet;
-    private ArrayList<LoadCurrencyPriceToActivityATask> mLoadCurrencyTasks;
+    private ArrayList<LoadCurrencyPriceToFragmentATask> mLoadCurrencyTasks;
     private int mPage;
 
     public static ValueChartFragment newInstance(int page) {
@@ -118,9 +118,9 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
 
         // load the actual value of each currency and pass the results to postExecuteUpdateView(...)
         for (Map.Entry<String, Double> entry : mTotalAmount.entrySet()) {
-            LoadCurrencyPriceToActivityATask loadCurrencyPriceToActivityATask = new LoadCurrencyPriceToActivityATask(entry.getKey(), this);
-            loadCurrencyPriceToActivityATask.execute();
-            mLoadCurrencyTasks.add(loadCurrencyPriceToActivityATask);
+            LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask = new LoadCurrencyPriceToFragmentATask(entry.getKey(), this);
+            loadCurrencyPriceToFragmentATask.execute();
+            mLoadCurrencyTasks.add(loadCurrencyPriceToFragmentATask);
         }
     }
 
@@ -170,8 +170,8 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
         }
 
         int taskCounter = 1;
-        for (LoadCurrencyPriceToActivityATask loadCurrencyPriceToActivityATask : mLoadCurrencyTasks) {
-            if ((loadCurrencyPriceToActivityATask.getStatus() == AsyncTask.Status.FINISHED)) {
+        for (LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask : mLoadCurrencyTasks) {
+            if ((loadCurrencyPriceToFragmentATask.getStatus() == AsyncTask.Status.FINISHED)) {
                 taskCounter++;
             }
         }
