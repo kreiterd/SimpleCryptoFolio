@@ -4,12 +4,12 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.facebook.stetho.Stetho;
 
 import danielkreiter.simplecryptofolio.Database.DbCryptocurrency;
 import danielkreiter.simplecryptofolio.Database.DbPurchase;
+import danielkreiter.simplecryptofolio.Database.SimpleCryptoFolioContract;
 import danielkreiter.simplecryptofolio.Model.Cryptocurrency;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        this.getApplicationContext().deleteDatabase("SimpleCryptoFolio.db");
+        this.getApplicationContext().deleteDatabase(SimpleCryptoFolioContract.DATABASE_NAME);
 
         // inizialise facebooks stetho tool
         Stetho.initializeWithDefaults(this);
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
         // write some samples into the database
         writeExamplePurchases();
-        // writeExampleCryptocurrencies();
+        writeExampleCryptocurrencies();
 
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items
@@ -100,12 +100,6 @@ public class MainActivity extends AppCompatActivity {
         p4.setValue(205);
         p4.setDate("09.08.20");
         id = mDbPurchase.writePurchase(p4);
-    }
-
-
-    public void onClick(View v) {
-        switch (v.getId()) {
-        }
     }
 
 }

@@ -4,8 +4,11 @@ import android.provider.BaseColumns;
 
 public class SimpleCryptoFolioContract {
 
+    public static final String DATABASE_NAME = "SimpleCryptoFolio.db";
+
     private SimpleCryptoFolioContract() {
     }
+
 
     public static class Cryptocurrency implements BaseColumns {
         public static final String TABLE_NAME = "cryptocurrency";
