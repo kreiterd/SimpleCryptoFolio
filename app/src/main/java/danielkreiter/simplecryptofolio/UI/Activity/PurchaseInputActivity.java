@@ -70,7 +70,7 @@ public class PurchaseInputActivity extends AppCompatActivity implements ISendDat
                     Cryptocurrency cryptocurrency = new Cryptocurrency(mCurrencyname);
                     mDbCryptocurrency.writeCryptocurrency(cryptocurrency);
                     mCryptocurrencies.add(cryptocurrency);
-                    //adapter.notifyDataSetChanged();
+                    //mAdapter.notifyDataSetChanged();
                     adapter.add(cryptocurrency);
                     mCurrencytype.setAdapter(adapter);
                 }

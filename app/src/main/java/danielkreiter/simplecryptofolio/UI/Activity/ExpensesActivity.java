@@ -66,7 +66,7 @@ public class ExpensesActivity extends AppCompatActivity {
 
 
         // create the dataSet
-        PieDataSet dataSet = new PieDataSet(entries, "Label");
+        PieDataSet dataSet = new PieDataSet(entries, "");
         dataSet.setColors(colors);
         dataSet.setValueTextSize(12f);
         dataSet.setValueTextColor(Color.WHITE);

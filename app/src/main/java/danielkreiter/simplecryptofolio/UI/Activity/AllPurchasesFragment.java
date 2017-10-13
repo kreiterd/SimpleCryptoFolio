@@ -23,8 +23,8 @@ public class AllPurchasesFragment extends Fragment {
     ListView mOverviewList;
     Button mGetChecked;
 
-    List<Purchase> purchases;
-    PurchaseOverviewAdapter adapter;
+    List<Purchase> mPurchases;
+    PurchaseOverviewAdapter mAdapter;
 
     private DbPurchase dbPurchase;
 
@@ -57,14 +57,14 @@ public class AllPurchasesFragment extends Fragment {
         this.mOverviewList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         this.mGetChecked = view.findViewById(R.id.delete_button);
 
+
         // logic
-        dbPurchase = new DbPurchase(view.getContext());
-        purchases = dbPurchase.readPurchases();
+        dbPurchase = new DbPurchase(getActivity());
+        mPurchases = dbPurchase.readPurchases();
 
-        // adapter
-        adapter = new PurchaseOverviewAdapter(this.getActivity(), purchases);
-        mOverviewList.setAdapter(adapter);
-
+        // mAdapter
+        mAdapter = new PurchaseOverviewAdapter(this.getActivity(), mPurchases);
+        mOverviewList.setAdapter(mAdapter);
         Button deleteButton = view.findViewById(R.id.delete_button);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,6 +75,28 @@ public class AllPurchasesFragment extends Fragment {
         return view;
     }
 
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            reloadAdapterWithNewPurchases();
+        }
+    }
+
+
+    private void reloadAdapterWithNewPurchases() {
+        // if dbPurchase and mAdapter are null, onCreateView has not been called yet
+        if (dbPurchase != null && mAdapter != null) {
+            mPurchases = dbPurchase.readPurchases();
+            mAdapter.clear();
+            for (Purchase p : mPurchases) {
+                mAdapter.add(p);
+            }
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
@@ -82,11 +104,11 @@ public class AllPurchasesFragment extends Fragment {
 
 
     private void deletePurchases() {
-        for (Purchase p : adapter.getAllChecked()) {
+        for (Purchase p : mAdapter.getAllChecked()) {
             dbPurchase.deletePurchase(p.getId());
-            purchases.remove(p);
+            mPurchases.remove(p);
         }
-        adapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
 }

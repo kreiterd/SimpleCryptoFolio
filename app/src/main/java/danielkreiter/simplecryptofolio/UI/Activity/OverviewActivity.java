@@ -37,7 +37,7 @@ public class OverviewActivity extends AppCompatActivity {
         dbPurchase = new DbPurchase(this.getApplicationContext());
         purchases = dbPurchase.readPurchases();
 
-        // adapter
+        // mAdapter
         adapter = new PurchaseOverviewAdapter(this, purchases);
         mOverviewList.setAdapter(adapter);
     }

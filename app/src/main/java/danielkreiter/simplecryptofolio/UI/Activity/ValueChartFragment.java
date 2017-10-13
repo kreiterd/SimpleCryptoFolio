@@ -79,6 +79,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
         mLoadingATextView = view.findViewById(R.id.loading_textview);
 
         Log.i(TAG, "onCreateView called.");
+
         return view;
     }
 
@@ -99,7 +100,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
         mEntries.clear();
         createCurrentValueChart();
 
-        // Add up the values of all purchases for each separate currency
+        // Add up the values of all mPurchases for each separate currency
         // ToDo: save the whole amount for each currency in the database
         for (Purchase purchase : mPurchases) {
 
@@ -125,6 +126,8 @@ public class ValueChartFragment extends Fragment implements ISendDataToActivity 
 
     void createCurrentValueChart() {
 
+        mChart.getLegend().setEnabled(false);
+        mChart.getDescription().setEnabled(false);
 
         // create the dataSet
         mDataSet = new PieDataSet(mEntries, "Label");

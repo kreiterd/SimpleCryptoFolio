@@ -93,7 +93,7 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToActivity
                     Cryptocurrency cryptocurrency = new Cryptocurrency(mCurrencyname);
                     mDbCryptocurrency.writeCryptocurrency(cryptocurrency);
                     mCryptocurrencies.add(cryptocurrency);
-                    //adapter.notifyDataSetChanged();
+                    //mAdapter.notifyDataSetChanged();
                     adapter.add(cryptocurrency);
                     mCurrencytype.setAdapter(adapter);
                 }
