@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import danielkreiter.simplecryptofolio.UI.Activity.AddPurchaseFragment;
 import danielkreiter.simplecryptofolio.UI.Activity.BasicFragment;
 import danielkreiter.simplecryptofolio.UI.Activity.ValueChartFragment;
 
@@ -31,7 +32,8 @@ public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
         switch (position) {
             case 0:
                 return ValueChartFragment.newInstance(position + 1);
-
+            case 1:
+                return AddPurchaseFragment.newInstance(position + 1);
             default:
                 return BasicFragment.newInstance(position + 1);
 
