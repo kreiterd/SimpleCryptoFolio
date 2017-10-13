@@ -7,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import danielkreiter.simplecryptofolio.CryptocurrencyData.CryptocurrencyDataProvider;
-import danielkreiter.simplecryptofolio.UI.Activity.ISendDataToActivity;
 
 public class LoadCurrencyPriceToActivityATask extends AsyncTask<String, String, JSONObject> {
 
@@ -36,11 +35,7 @@ public class LoadCurrencyPriceToActivityATask extends AsyncTask<String, String, 
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         return result;
     }
 

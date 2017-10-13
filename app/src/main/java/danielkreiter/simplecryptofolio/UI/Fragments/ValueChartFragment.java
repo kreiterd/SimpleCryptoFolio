@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI.Activity;
+package danielkreiter.simplecryptofolio.UI.Fragments;
 
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -30,6 +30,7 @@ import java.util.Random;
 import danielkreiter.simplecryptofolio.Database.DbPurchase;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
+import danielkreiter.simplecryptofolio.UI.ISendDataToActivity;
 import danielkreiter.simplecryptofolio.UI.LoadCurrencyPriceToActivityATask;
 import danielkreiter.simplecryptofolio.UI.PieChartValueFormatter;
 

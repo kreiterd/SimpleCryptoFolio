@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI.Activity;
+package danielkreiter.simplecryptofolio.UI.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

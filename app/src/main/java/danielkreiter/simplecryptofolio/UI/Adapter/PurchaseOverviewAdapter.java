@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI;
+package danielkreiter.simplecryptofolio.UI.Adapter;
 
 import android.app.Activity;
 import android.view.View;

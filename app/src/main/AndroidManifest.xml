@@ -11,29 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UI.Activity.MainActivity">
+        <activity android:name=".UI.Activitys.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".UI.Activity.ExpensesActivity"
-            android:label="@string/title_activity_expenses"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".UI.Activity.PurchaseInputActivity"
-            android:label="@string/title_activity_purchase_input"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".UI.Activity.OverviewActivity"
-            android:label="@string/title_activity_overview"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".UI.Activity.CurrentValuePieChartActivity"
-            android:label="@string/title_activity_current_value_pie_chart"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

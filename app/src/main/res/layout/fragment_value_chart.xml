@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="danielkreiter.simplecryptofolio.UI.Activity.ValueChartFragment">
+    tools:context="danielkreiter.simplecryptofolio.UI.Fragments.ValueChartFragment">
 
     <RelativeLayout
         android:id="@+id/linearLayout2"

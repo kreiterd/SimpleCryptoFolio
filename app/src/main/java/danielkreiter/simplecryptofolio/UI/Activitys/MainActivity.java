@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI.Activity;
+package danielkreiter.simplecryptofolio.UI.Activitys;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -13,7 +13,7 @@ import danielkreiter.simplecryptofolio.Database.DbPurchase;
 import danielkreiter.simplecryptofolio.Model.Cryptocurrency;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
-import danielkreiter.simplecryptofolio.UI.TabFragmentPagerAdapter;
+import danielkreiter.simplecryptofolio.UI.Adapter.TabFragmentPagerAdapter;
 
 
 public class MainActivity extends AppCompatActivity {

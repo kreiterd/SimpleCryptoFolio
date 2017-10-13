@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI.Activity;
+package danielkreiter.simplecryptofolio.UI;
 
 import org.json.JSONObject;
 

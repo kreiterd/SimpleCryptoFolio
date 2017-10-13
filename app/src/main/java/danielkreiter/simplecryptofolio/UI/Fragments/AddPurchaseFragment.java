@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI.Activity;
+package danielkreiter.simplecryptofolio.UI.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -25,6 +25,7 @@ import danielkreiter.simplecryptofolio.Model.Cryptocurrency;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
 import danielkreiter.simplecryptofolio.UI.EditTextDatePicker;
+import danielkreiter.simplecryptofolio.UI.ISendDataToActivity;
 import danielkreiter.simplecryptofolio.UI.LoadCurrencyPriceToActivityATask;
 
 

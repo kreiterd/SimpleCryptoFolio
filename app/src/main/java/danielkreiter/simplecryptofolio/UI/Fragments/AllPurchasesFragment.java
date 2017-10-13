@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI.Activity;
+package danielkreiter.simplecryptofolio.UI.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,7 +14,7 @@ import java.util.List;
 import danielkreiter.simplecryptofolio.Database.DbPurchase;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
-import danielkreiter.simplecryptofolio.UI.PurchaseOverviewAdapter;
+import danielkreiter.simplecryptofolio.UI.Adapter.PurchaseOverviewAdapter;
 
 public class AllPurchasesFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";

@@ -1,14 +1,14 @@
-package danielkreiter.simplecryptofolio.UI;
+package danielkreiter.simplecryptofolio.UI.Adapter;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import danielkreiter.simplecryptofolio.UI.Activity.AddPurchaseFragment;
-import danielkreiter.simplecryptofolio.UI.Activity.AllPurchasesFragment;
-import danielkreiter.simplecryptofolio.UI.Activity.BasicFragment;
-import danielkreiter.simplecryptofolio.UI.Activity.ValueChartFragment;
+import danielkreiter.simplecryptofolio.UI.Fragments.AddPurchaseFragment;
+import danielkreiter.simplecryptofolio.UI.Fragments.AllPurchasesFragment;
+import danielkreiter.simplecryptofolio.UI.Fragments.BasicFragment;
+import danielkreiter.simplecryptofolio.UI.Fragments.ValueChartFragment;
 
 public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
