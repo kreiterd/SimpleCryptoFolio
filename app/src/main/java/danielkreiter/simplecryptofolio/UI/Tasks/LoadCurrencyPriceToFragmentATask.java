@@ -51,7 +51,11 @@ public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, 
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
+        try { // todo: remove this code
+            Thread.sleep(400);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return result;
     }
 
