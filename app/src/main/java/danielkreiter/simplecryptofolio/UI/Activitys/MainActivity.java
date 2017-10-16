@@ -23,6 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
     private DbPurchase mDbPurchase;
     private DbCryptocurrency mDbCryptocurrency;
+    private TabLayout mTabLayout;
+    private int[] mTabIcons = {
+            R.drawable.ic_pie_chart_3x,
+            R.drawable.ic_add_3x,
+            R.drawable.ic_delete_3x};
 
     /**
      * onCreate
@@ -55,12 +60,19 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Give the TabLayout the ViewPager
-        TabLayout tabLayout = findViewById(R.id.sliding_tabs);
-        tabLayout.setupWithViewPager(viewPager);
+        mTabLayout = findViewById(R.id.sliding_tabs);
+        mTabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(
-                tabLayout));
+                mTabLayout));
 
+        setupTabIcons();
+    }
+
+    private void setupTabIcons() {
+        mTabLayout.getTabAt(0).setIcon(mTabIcons[0]);
+        mTabLayout.getTabAt(1).setIcon(mTabIcons[1]);
+        mTabLayout.getTabAt(2).setIcon(mTabIcons[2]);
     }
 
     /**

@@ -12,7 +12,7 @@ import danielkreiter.simplecryptofolio.UI.Fragments.ValueChartFragment;
 
 public class TabFragmentPagerAdapter extends FragmentPagerAdapter {
     final int PAGE_COUNT = 3;
-    private String tabTitles[] = new String[]{"Übersicht", "Add", "Delete"};
+    private String tabTitles[] = new String[]{"Overview", "Add", "Delete"};
     private Context context;
 
     public TabFragmentPagerAdapter(FragmentManager fm, Context context) {
