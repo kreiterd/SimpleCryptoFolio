@@ -25,9 +25,9 @@ import danielkreiter.simplecryptofolio.Database.DbPurchase;
 import danielkreiter.simplecryptofolio.Model.Cryptocurrency;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
-import danielkreiter.simplecryptofolio.UI.EditTextDatePicker;
-import danielkreiter.simplecryptofolio.UI.ISendDataToUI;
-import danielkreiter.simplecryptofolio.UI.LoadCurrencyPriceToFragmentATask;
+import danielkreiter.simplecryptofolio.UI.Elements.EditTextDatePicker;
+import danielkreiter.simplecryptofolio.UI.Interfaces.ISendDataToUI;
+import danielkreiter.simplecryptofolio.UI.Tasks.LoadCurrencyPriceToFragmentATask;
 
 
 /**

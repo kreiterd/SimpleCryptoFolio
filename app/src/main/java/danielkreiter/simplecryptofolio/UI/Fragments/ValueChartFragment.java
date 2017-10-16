@@ -30,9 +30,9 @@ import java.util.Random;
 import danielkreiter.simplecryptofolio.Database.DbPurchase;
 import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
-import danielkreiter.simplecryptofolio.UI.ISendDataToUI;
-import danielkreiter.simplecryptofolio.UI.LoadCurrencyPriceToFragmentATask;
-import danielkreiter.simplecryptofolio.UI.PieChartValueFormatter;
+import danielkreiter.simplecryptofolio.UI.Elements.PieChartValueFormatter;
+import danielkreiter.simplecryptofolio.UI.Interfaces.ISendDataToUI;
+import danielkreiter.simplecryptofolio.UI.Tasks.LoadCurrencyPriceToFragmentATask;
 
 public class ValueChartFragment extends Fragment implements ISendDataToUI {
     public static final String ARG_PAGE = "ARG_PAGE";

@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI;
+package danielkreiter.simplecryptofolio.UI.Tasks;
 
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import danielkreiter.simplecryptofolio.CryptocurrencyData.CryptocurrencyDataProvider;
+import danielkreiter.simplecryptofolio.UI.Interfaces.ISendDataToUI;
 
 /**
  * Async-Task to load the data from an API to a activity

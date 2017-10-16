@@ -1,4 +1,4 @@
-package danielkreiter.simplecryptofolio.UI;
+package danielkreiter.simplecryptofolio.UI.Elements;
 
 
 import android.app.DatePickerDialog;

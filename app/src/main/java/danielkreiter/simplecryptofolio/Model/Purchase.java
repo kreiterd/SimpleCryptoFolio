@@ -1,7 +1,7 @@
 package danielkreiter.simplecryptofolio.Model;
 
 
-import danielkreiter.simplecryptofolio.UI.CheckableListItem;
+import danielkreiter.simplecryptofolio.UI.Elements.CheckableListItem;
 
 public class Purchase extends CheckableListItem {
 
