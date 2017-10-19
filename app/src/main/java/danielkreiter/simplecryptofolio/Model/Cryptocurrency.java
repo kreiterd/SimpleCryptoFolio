@@ -2,33 +2,32 @@ package danielkreiter.simplecryptofolio.Model;
 
 public class Cryptocurrency {
 
-    private long mId;
-
-    private String mName;
+    private long id;
+    private String name;
 
     public Cryptocurrency() {
 
     }
 
     public Cryptocurrency(String name) {
-        this.mName = name;
+        this.name = name;
     }
 
 
     public long getId() {
-        return mId;
+        return id;
     }
 
     public void setId(long mId) {
-        this.mId = mId;
+        this.id = mId;
     }
 
     public String getName() {
-        return mName;
+        return name;
     }
 
     public void setName(String mName) {
-        this.mName = mName;
+        this.name = mName;
     }
 
     @Override

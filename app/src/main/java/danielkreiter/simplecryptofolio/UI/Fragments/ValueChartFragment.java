@@ -37,16 +37,16 @@ import danielkreiter.simplecryptofolio.UI.Tasks.LoadCurrencyPriceToFragmentATask
 public class ValueChartFragment extends Fragment implements ISendDataToUI {
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String TAG = "ValueChartFragment";
-    PieChart mChart;
-    ProgressBar progressBar;
-    TextView mLoadingATextView;
-    Map<String, Double> mTotalAmount;
-    List<Integer> mColors;
-    List<PieEntry> mEntries;
-    List<Purchase> mPurchases;
-    PieDataSet mDataSet;
-    private ArrayList<LoadCurrencyPriceToFragmentATask> mLoadCurrencyTasks;
-    private int mPage;
+    PieChart valuePieChart;
+    ProgressBar loadValuesProgressBar;
+    TextView loadValuesTextView;
+    Map<String, Double> totalAmount;
+    List<Integer> colors;
+    List<PieEntry> entries;
+    List<Purchase> purchases;
+    PieDataSet valueDataSet;
+    private ArrayList<LoadCurrencyPriceToFragmentATask> loadingTasks;
+    private int page;
 
     public static ValueChartFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -60,12 +60,12 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate called.");
-        mPage = getArguments().getInt(ARG_PAGE);
+        page = getArguments().getInt(ARG_PAGE);
 
-        mLoadCurrencyTasks = new ArrayList<>();
-        mTotalAmount = new HashMap<>();
-        mColors = new ArrayList<>();
-        mEntries = new ArrayList<>();
+        loadingTasks = new ArrayList<>();
+        totalAmount = new HashMap<>();
+        colors = new ArrayList<>();
+        entries = new ArrayList<>();
 
 
     }
@@ -75,9 +75,9 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_value_chart, container, false);
-        mChart = view.findViewById(R.id.chart);
-        progressBar = view.findViewById(R.id.loading_progressbar);
-        mLoadingATextView = view.findViewById(R.id.loading_textview);
+        valuePieChart = view.findViewById(R.id.chart);
+        loadValuesProgressBar = view.findViewById(R.id.loading_progressbar);
+        loadValuesTextView = view.findViewById(R.id.loading_textview);
 
         Log.i(TAG, "onCreateView called.");
 
@@ -94,56 +94,56 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
     }
 
     void loadCurrencyData() {
-        mChart.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.VISIBLE);
-        mPurchases = (new DbPurchase(getActivity())).readPurchases();
-        mTotalAmount.clear();
-        mEntries.clear();
+        valuePieChart.setVisibility(View.INVISIBLE);
+        loadValuesProgressBar.setVisibility(View.VISIBLE);
+        purchases = (new DbPurchase(getActivity())).readPurchases();
+        totalAmount.clear();
+        entries.clear();
         createCurrentValueChart();
 
-        // Add up the values of all mPurchases for each separate currency
+        // Add up the values of all purchases for each separate currency
         // ToDo: save the whole amount for each currency in the database
-        for (Purchase purchase : mPurchases) {
+        for (Purchase purchase : purchases) {
 
             String currencyName = purchase.getCurrencytype();
             Double amount = purchase.getAmount();
 
-            if (mTotalAmount.containsKey(currencyName))
-                mTotalAmount.put(currencyName, mTotalAmount.get(currencyName) + amount);
+            if (totalAmount.containsKey(currencyName))
+                totalAmount.put(currencyName, totalAmount.get(currencyName) + amount);
             else
-                mTotalAmount.put(currencyName, amount);
+                totalAmount.put(currencyName, amount);
 
         }
 
 
         // load the actual value of each currency and pass the results to postExecuteUpdateView(...)
-        for (Map.Entry<String, Double> entry : mTotalAmount.entrySet()) {
+        for (Map.Entry<String, Double> entry : totalAmount.entrySet()) {
             LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask = new LoadCurrencyPriceToFragmentATask(entry.getKey(), this);
             loadCurrencyPriceToFragmentATask.execute();
-            mLoadCurrencyTasks.add(loadCurrencyPriceToFragmentATask);
+            loadingTasks.add(loadCurrencyPriceToFragmentATask);
         }
     }
 
 
     void createCurrentValueChart() {
 
-        mChart.getLegend().setEnabled(false);
-        mChart.getDescription().setEnabled(false);
+        valuePieChart.getLegend().setEnabled(false);
+        valuePieChart.getDescription().setEnabled(false);
 
         // create the dataSet
-        mDataSet = new PieDataSet(mEntries, "Label");
+        valueDataSet = new PieDataSet(entries, "Label");
 
         // chart settings
-        mDataSet.setValueTextSize(12f);
-        mDataSet.setValueTextColor(Color.WHITE);
+        valueDataSet.setValueTextSize(12f);
+        valueDataSet.setValueTextColor(Color.WHITE);
 
         // build the pieChart
-        PieData pieData = new PieData(mDataSet);
+        PieData pieData = new PieData(valueDataSet);
         pieData.setValueFormatter(new PieChartValueFormatter());
-        mChart.setData(pieData);
+        valuePieChart.setData(pieData);
 
         // refresh the pieChart
-        mChart.invalidate();
+        valuePieChart.invalidate();
 
     }
 
@@ -156,35 +156,35 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
         while (iter.hasNext()) {
             String key = iter.next();
             try {
-                PieEntry pieEntry = new PieEntry((float) result.getDouble(key) * this.mTotalAmount.get(key).floatValue(), key);
-                mDataSet.addEntry(pieEntry);
+                PieEntry pieEntry = new PieEntry((float) result.getDouble(key) * this.totalAmount.get(key).floatValue(), key);
+                valueDataSet.addEntry(pieEntry);
                 // ToDo: let users choose their own color
                 Random rnd = new Random();
                 int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-                mDataSet.addColor(color);
-                mChart.notifyDataSetChanged(); // let the chart know it's data changed
-                mChart.invalidate(); // refresh
+                valueDataSet.addColor(color);
+                valuePieChart.notifyDataSetChanged(); // let the chart know it's data changed
+                valuePieChart.invalidate(); // refresh
             } catch (JSONException e) {
                 // ToDo: handle exceptions! don't leave this empty!
             }
         }
 
         int taskCounter = 1;
-        for (LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask : mLoadCurrencyTasks) {
+        for (LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask : loadingTasks) {
             if ((loadCurrencyPriceToFragmentATask.getStatus() == AsyncTask.Status.FINISHED)) {
                 taskCounter++;
             }
         }
-        int p = 100 / mLoadCurrencyTasks.size();
+        int p = 100 / loadingTasks.size();
 
-        progressBar.setProgress(p * taskCounter);
+        loadValuesProgressBar.setProgress(p * taskCounter);
         Resources res = getResources();
         String loadCurrencyData = res.getString(R.string.load_currency_data);
-        mLoadingATextView.setText(loadCurrencyData + "" + p * taskCounter + "%");
-        if (taskCounter == mLoadCurrencyTasks.size()) {
-            mLoadingATextView.setText(loadCurrencyData + "100%");
-            mChart.setVisibility(View.VISIBLE);
-            progressBar.setVisibility(View.INVISIBLE);
+        loadValuesTextView.setText(loadCurrencyData + "" + p * taskCounter + "%");
+        if (taskCounter == loadingTasks.size()) {
+            loadValuesTextView.setText(loadCurrencyData + "100%");
+            valuePieChart.setVisibility(View.VISIBLE);
+            loadValuesProgressBar.setVisibility(View.INVISIBLE);
         }
 
     }

@@ -17,15 +17,15 @@ import danielkreiter.simplecryptofolio.R;
 public class PurchaseOverviewAdapter extends ArrayAdapter<Purchase> {
 
     private final Activity context;
-    List<Purchase> mPurchases;
-    List<Purchase> mChecked;
+    List<Purchase> purchases;
+    List<Purchase> checked;
 
 
     public PurchaseOverviewAdapter(Activity context, List<Purchase> purchases) {
         super(context, R.layout.purchase_overview_listitem, purchases);
         this.context = context;
-        this.mPurchases = purchases;
-        mChecked = new ArrayList<>();
+        this.purchases = purchases;
+        checked = new ArrayList<>();
     }
 
     @Override
@@ -51,7 +51,7 @@ public class PurchaseOverviewAdapter extends ArrayAdapter<Purchase> {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                     int getPosition = (Integer) buttonView.getTag();
-                    Purchase purchase = mPurchases.get(getPosition);
+                    Purchase purchase = purchases.get(getPosition);
                     // Boolean isChecked = buttonView.isChecked();
                     purchase.setChecked(isChecked);
 
@@ -59,11 +59,11 @@ public class PurchaseOverviewAdapter extends ArrayAdapter<Purchase> {
                    * better performance but higher code complexity
                    *
 
-                   if (isChecked && !mChecked.contains(purchase)) {
-                        mChecked.add(purchase);
+                   if (isChecked && !checked.contains(purchase)) {
+                        checked.add(purchase);
                     }
-                    if (!isChecked && mChecked.contains(purchase)) {
-                        mChecked.remove(purchase);
+                    if (!isChecked && checked.contains(purchase)) {
+                        checked.remove(purchase);
                     }
 
                     */
@@ -86,7 +86,7 @@ public class PurchaseOverviewAdapter extends ArrayAdapter<Purchase> {
 
         viewHolder.checked.setTag(position);
 
-        Purchase purchase = mPurchases.get(position);
+        Purchase purchase = purchases.get(position);
         viewHolder.id.setText(String.valueOf(purchase.getId()));
 
         viewHolder.id.setText("" + String.valueOf(purchase.getId()));
@@ -104,13 +104,13 @@ public class PurchaseOverviewAdapter extends ArrayAdapter<Purchase> {
 
     public List<Purchase> getAllChecked() {
         updateChecked();
-        return mChecked;
+        return checked;
     }
 
     private void updateChecked() {
-        mChecked.clear();
-        for (Purchase p : mPurchases) {
-            if (p.isChecked()) this.mChecked.add(p);
+        checked.clear();
+        for (Purchase p : purchases) {
+            if (p.isChecked()) this.checked.add(p);
         }
     }
 

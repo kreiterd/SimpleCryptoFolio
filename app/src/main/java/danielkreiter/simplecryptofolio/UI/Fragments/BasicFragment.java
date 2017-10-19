@@ -11,7 +11,7 @@ import danielkreiter.simplecryptofolio.R;
 public class BasicFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
 
-    private int mPage;
+    private int page;
 
     public static BasicFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -24,7 +24,7 @@ public class BasicFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mPage = getArguments().getInt(ARG_PAGE);
+        page = getArguments().getInt(ARG_PAGE);
     }
 
     @Override

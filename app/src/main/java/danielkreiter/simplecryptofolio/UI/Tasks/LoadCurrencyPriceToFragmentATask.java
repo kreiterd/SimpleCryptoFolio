@@ -14,8 +14,8 @@ import danielkreiter.simplecryptofolio.UI.Interfaces.ISendDataToUI;
  */
 public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, JSONObject> {
 
-    private ISendDataToUI mISendDataToUI;
-    private String mSsourceCurrencyTag;
+    private ISendDataToUI iSendDataToUi;
+    private String sourceCurrencyTag;
 
     /**
      * Instantiates a Async-Task
@@ -24,8 +24,8 @@ public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, 
      * @param fragment          the fragment
      */
     public LoadCurrencyPriceToFragmentATask(String sourceCurrencyTag, Fragment fragment) {
-        this.mISendDataToUI = (ISendDataToUI) fragment;
-        this.mSsourceCurrencyTag = sourceCurrencyTag;
+        this.iSendDataToUi = (ISendDataToUI) fragment;
+        this.sourceCurrencyTag = sourceCurrencyTag;
     }
 
     /**
@@ -33,7 +33,7 @@ public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, 
      */
     @Override
     protected void onPreExecute() {
-        mISendDataToUI.preExecuteUpdateView();
+        iSendDataToUi.preExecuteUpdateView();
     }
 
     /**
@@ -44,8 +44,8 @@ public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, 
         CryptocurrencyDataProvider cryptocurrencyDataProvider = new CryptocurrencyDataProvider();
         JSONObject result = new JSONObject();
         try {
-            result.put(this.mSsourceCurrencyTag, Double.toString(cryptocurrencyDataProvider
-                    .getCurrencyPrice(this.mSsourceCurrencyTag, "EUR")));
+            result.put(this.sourceCurrencyTag, Double.toString(cryptocurrencyDataProvider
+                    .getCurrencyPrice(this.sourceCurrencyTag, "EUR")));
 
         } catch (JSONException e) {
             // TODO Auto-generated catch block
@@ -66,6 +66,6 @@ public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, 
      */
     @Override
     protected void onPostExecute(JSONObject result) {
-        mISendDataToUI.postExecuteUpdateView(result);
+        iSendDataToUi.postExecuteUpdateView(result);
     }
 }

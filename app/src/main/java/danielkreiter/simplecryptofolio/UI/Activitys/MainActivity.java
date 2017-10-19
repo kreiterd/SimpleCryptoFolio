@@ -21,10 +21,10 @@ import danielkreiter.simplecryptofolio.UI.Adapter.TabFragmentPagerAdapter;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private DbPurchase mDbPurchase;
-    private DbCryptocurrency mDbCryptocurrency;
-    private TabLayout mTabLayout;
-    private int[] mTabIcons = {
+    private DbPurchase dbPurchase;
+    private DbCryptocurrency dbCryptocurrency;
+    private TabLayout tabLayout;
+    private int[] tabIcons = {
             R.drawable.ic_pie_chart_3x,
             R.drawable.ic_add_3x,
             R.drawable.ic_delete_3x};
@@ -45,8 +45,8 @@ public class MainActivity extends AppCompatActivity {
         Stetho.initializeWithDefaults(this);
 
 
-        this.mDbPurchase = new DbPurchase(this.getApplicationContext());
-        this.mDbCryptocurrency = new DbCryptocurrency(this.getApplicationContext());
+        this.dbPurchase = new DbPurchase(this.getApplicationContext());
+        this.dbCryptocurrency = new DbCryptocurrency(this.getApplicationContext());
 
         // write some samples into the database
         writeExamplePurchases();
@@ -60,19 +60,19 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Give the TabLayout the ViewPager
-        mTabLayout = findViewById(R.id.sliding_tabs);
-        mTabLayout.setupWithViewPager(viewPager);
+        tabLayout = findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(
-                mTabLayout));
+                tabLayout));
 
         setupTabIcons();
     }
 
     private void setupTabIcons() {
-        mTabLayout.getTabAt(0).setIcon(mTabIcons[0]);
-        mTabLayout.getTabAt(1).setIcon(mTabIcons[1]);
-        mTabLayout.getTabAt(2).setIcon(mTabIcons[2]);
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     /**
@@ -83,8 +83,8 @@ public class MainActivity extends AppCompatActivity {
         cryptocurrency1.setName("ETH");
         Cryptocurrency cryptocurrency2 = new Cryptocurrency();
         cryptocurrency2.setName("BTC");
-        mDbCryptocurrency.writeCryptocurrency(cryptocurrency1);
-        mDbCryptocurrency.writeCryptocurrency(cryptocurrency2);
+        dbCryptocurrency.writeCryptocurrency(cryptocurrency1);
+        dbCryptocurrency.writeCryptocurrency(cryptocurrency2);
 
     }
 
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         p1.setPricepercoin(2);
         p1.setValue(105);
         p1.setDate("08.08.20");
-        long l = mDbPurchase.writePurchase(p1);
+        long l = dbPurchase.writePurchase(p1);
         long id = l;
 
 
@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         p2.setPricepercoin(200);
         p2.setValue(205);
         p2.setDate("06.08.20");
-        id = mDbPurchase.writePurchase(p2);
+        id = dbPurchase.writePurchase(p2);
 
 
         Purchase p3 = new Purchase();
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         p3.setPricepercoin(2000);
         p3.setValue(205);
         p3.setDate("04.08.20");
-        id = mDbPurchase.writePurchase(p3);
+        id = dbPurchase.writePurchase(p3);
 
         Purchase p4 = new Purchase();
         p4.setCurrencytype("IOT");
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         p4.setPricepercoin(0.50);
         p4.setValue(205);
         p4.setDate("09.08.20");
-        id = mDbPurchase.writePurchase(p4);
+        id = dbPurchase.writePurchase(p4);
     }
 
 }

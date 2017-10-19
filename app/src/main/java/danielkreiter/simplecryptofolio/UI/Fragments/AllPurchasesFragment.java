@@ -2,7 +2,6 @@ package danielkreiter.simplecryptofolio.UI.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,15 +19,15 @@ public class AllPurchasesFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String TAG = "AddPurchaseFragment";
 
-    ListView mOverviewList;
-    Button mGetChecked;
+    ListView overviewListView;
+    Button deleteButton;
 
-    List<Purchase> mPurchases;
-    PurchaseOverviewAdapter mAdapter;
+    List<Purchase> purchases;
+    PurchaseOverviewAdapter purchaseOverviewAdapter;
 
     private DbPurchase dbPurchase;
 
-    private int mPage;
+    private int page;
 
     public static AllPurchasesFragment newInstance(int page) {
         Bundle args = new Bundle();
@@ -41,30 +40,29 @@ public class AllPurchasesFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate called.");
-        mPage = getArguments().getInt(ARG_PAGE);
-
-
+        page = getArguments().getInt(ARG_PAGE);
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_all_purchases, container, false);
+        final View view = inflater.inflate(R.layout.fragment_all_purchases,
+                container, false);
+
         // set views
-        this.mOverviewList = view.findViewById(R.id.overview_listview);
-        this.mOverviewList.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-        this.mGetChecked = view.findViewById(R.id.delete_button);
+        this.overviewListView = view.findViewById(R.id.overview_listview);
+        this.overviewListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        this.deleteButton = view.findViewById(R.id.delete_button);
 
 
         // logic
         dbPurchase = new DbPurchase(getActivity());
-        mPurchases = dbPurchase.readPurchases();
+        purchases = dbPurchase.readPurchases();
 
-        // mAdapter
-        mAdapter = new PurchaseOverviewAdapter(this.getActivity(), mPurchases);
-        mOverviewList.setAdapter(mAdapter);
+        // purchaseOverviewAdapter
+        purchaseOverviewAdapter = new PurchaseOverviewAdapter(this.getActivity(), purchases);
+        overviewListView.setAdapter(purchaseOverviewAdapter);
         Button deleteButton = view.findViewById(R.id.delete_button);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,14 +84,13 @@ public class AllPurchasesFragment extends Fragment {
 
 
     private void reloadAdapterWithNewPurchases() {
-        // if dbPurchase and mAdapter are null, onCreateView has not been called yet
-        if (dbPurchase != null && mAdapter != null) {
-            mPurchases = dbPurchase.readPurchases();
-            mAdapter.clear();
-            for (Purchase p : mPurchases) {
-                mAdapter.add(p);
+        if (dbPurchase != null && purchaseOverviewAdapter != null) {
+            purchases = dbPurchase.readPurchases();
+            purchaseOverviewAdapter.clear();
+            for (Purchase p : purchases) {
+                purchaseOverviewAdapter.add(p);
             }
-            mAdapter.notifyDataSetChanged();
+            purchaseOverviewAdapter.notifyDataSetChanged();
         }
     }
 
@@ -104,11 +101,11 @@ public class AllPurchasesFragment extends Fragment {
 
 
     private void deletePurchases() {
-        for (Purchase p : mAdapter.getAllChecked()) {
+        for (Purchase p : purchaseOverviewAdapter.getAllChecked()) {
             dbPurchase.deletePurchase(p.getId());
-            mPurchases.remove(p);
+            purchases.remove(p);
         }
-        mAdapter.notifyDataSetChanged();
+        purchaseOverviewAdapter.notifyDataSetChanged();
     }
 
 }

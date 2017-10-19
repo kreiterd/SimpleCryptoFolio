@@ -36,23 +36,21 @@ import danielkreiter.simplecryptofolio.UI.Tasks.LoadCurrencyPriceToFragmentATask
 public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
 
     public static final String ARG_PAGE = "ARG_PAGE";
-
     public static final String TAG = "AddPurchaseFragment";
-
-
     ArrayAdapter<Cryptocurrency> adapter;
-    private ProgressBar mProgressBar;
-    private TextView mCoindata;
-    private AutoCompleteTextView mCurrencytype;
-    private EditText mDate;
-    private EditText mValue;
-    private EditText mAmount;
-    private EditText mPricepercoin;
-    private DbPurchase mDbPurchase;
-    private DbCryptocurrency mDbCryptocurrency;
-    private List<Cryptocurrency> mCryptocurrencies;
-    private String mCurrencyname;
-    private ImageButton mLoadDataButton;
+    private AutoCompleteTextView currencyTagAutoCompleteTextView;
+    private EditText date_editText;
+    private EditText valueEditText;
+    private EditText amountEditText;
+    private EditText coinPriceEditText;
+    private ProgressBar loadCurrencyPriceProgressBar;
+    private TextView coindataTextView;
+    private ImageButton loadDataImageButton;
+    private DbPurchase dbPurchase;
+    private DbCryptocurrency dbCryptocurrency;
+    private List<Cryptocurrency> cryptocurrency;
+    private String currencyName;
+
 
 
     /**
@@ -78,54 +76,56 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_add_purchase, container, false);
-        mDbPurchase = new DbPurchase(view.getContext());
-        mDbCryptocurrency = new DbCryptocurrency(view.getContext());
-        this.mDate = view.findViewById(R.id.date_editText);
-        this.mProgressBar = view.findViewById(R.id.loadCurrencyData_ProgressBar);
-        this.mCurrencytype = view.findViewById(R.id.currencytype_editText);
-        this.mCoindata = view.findViewById(R.id.coindata_textview);
-        this.mCurrencytype = view.findViewById(R.id.currencytype_editText);
-        this.mDate = view.findViewById(R.id.date_editText);
-        this.mValue = view.findViewById(R.id.value_editText);
-        this.mAmount = view.findViewById(R.id.amount_editText);
-        this.mPricepercoin = view.findViewById(R.id.pricepercoin_editText);
-        this.mCoindata = view.findViewById(R.id.coindata_textview);
+        final View view = inflater.inflate(R.layout.fragment_add_purchase,
+                container, false);
+
+        dbPurchase = new DbPurchase(view.getContext());
+        dbCryptocurrency = new DbCryptocurrency(view.getContext());
+
+        this.date_editText = view.findViewById(R.id.date_editText);
+        this.loadCurrencyPriceProgressBar = view.findViewById(R.id.loadCurrencyData_ProgressBar);
+        this.currencyTagAutoCompleteTextView = view.findViewById(R.id.currencytype_editText);
+        this.coindataTextView = view.findViewById(R.id.coindata_textview);
+        this.currencyTagAutoCompleteTextView = view.findViewById(R.id.currencytype_editText);
+        this.valueEditText = view.findViewById(R.id.value_editText);
+        this.amountEditText = view.findViewById(R.id.amount_editText);
+        this.coinPriceEditText = view.findViewById(R.id.pricepercoin_editText);
+        this.coindataTextView = view.findViewById(R.id.coindata_textview);
+        loadDataImageButton = view.findViewById(R.id.loadCurrencyData_button);
 
 
-        mLoadDataButton = view.findViewById(R.id.loadCurrencyData_button);
-        mLoadDataButton.setOnClickListener(new View.OnClickListener() {
+        loadDataImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCurrencyname = mCurrencytype.getText().toString();
-                if (mDbCryptocurrency.readCryptocurrency(mCurrencyname) == null) {
-                    Cryptocurrency cryptocurrency = new Cryptocurrency(mCurrencyname);
-                    mDbCryptocurrency.writeCryptocurrency(cryptocurrency);
-                    mCryptocurrencies.add(cryptocurrency);
+                currencyName = currencyTagAutoCompleteTextView.getText().toString();
+                if (dbCryptocurrency.readCryptocurrency(currencyName) == null) {
+                    Cryptocurrency cryptocurrency = new Cryptocurrency(currencyName);
+                    dbCryptocurrency.writeCryptocurrency(cryptocurrency);
+                    AddPurchaseFragment.this.cryptocurrency.add(cryptocurrency);
                     adapter.add(cryptocurrency);
-                    mCurrencytype.setAdapter(adapter);
+                    currencyTagAutoCompleteTextView.setAdapter(adapter);
                 }
                 LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask
-                        = new LoadCurrencyPriceToFragmentATask(mCurrencyname, AddPurchaseFragment.this
+                        = new LoadCurrencyPriceToFragmentATask(currencyName, AddPurchaseFragment.this
                 );
                 loadCurrencyPriceToFragmentATask.execute();
             }
         });
 
-        mCurrencytype.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        currencyTagAutoCompleteTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    mCurrencyname = mCurrencytype.getText().toString();
-                    if (mDbCryptocurrency.readCryptocurrency(mCurrencyname) == null) {
-                        Cryptocurrency cryptocurrency = new Cryptocurrency(mCurrencyname);
-                        mDbCryptocurrency.writeCryptocurrency(cryptocurrency);
-                        mCryptocurrencies.add(cryptocurrency);
+                    currencyName = currencyTagAutoCompleteTextView.getText().toString();
+                    if (dbCryptocurrency.readCryptocurrency(currencyName) == null) {
+                        Cryptocurrency cryptocurrency = new Cryptocurrency(currencyName);
+                        dbCryptocurrency.writeCryptocurrency(cryptocurrency);
+                        AddPurchaseFragment.this.cryptocurrency.add(cryptocurrency);
                         adapter.add(cryptocurrency);
-                        mCurrencytype.setAdapter(adapter);
+                        currencyTagAutoCompleteTextView.setAdapter(adapter);
                     }
                     LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask
-                            = new LoadCurrencyPriceToFragmentATask(mCurrencyname, AddPurchaseFragment.this
+                            = new LoadCurrencyPriceToFragmentATask(currencyName, AddPurchaseFragment.this
                     );
                     loadCurrencyPriceToFragmentATask.execute();
                 }
@@ -142,15 +142,15 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
         });
 
 
-        mCryptocurrencies = mDbCryptocurrency.readCryptocurrencyies();
-        adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, mCryptocurrencies);
-        mCurrencytype.setAdapter(adapter);
+        cryptocurrency = dbCryptocurrency.readCryptocurrencyies();
+        adapter = new ArrayAdapter<>(view.getContext(), android.R.layout.simple_list_item_1, cryptocurrency);
+        currencyTagAutoCompleteTextView.setAdapter(adapter);
 
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mCoindata.setText("");
+        loadCurrencyPriceProgressBar.setVisibility(View.INVISIBLE);
+        coindataTextView.setText("");
 
         // attach listener to date field
-        new EditTextDatePicker(view.getContext(), mDate);
+        new EditTextDatePicker(view.getContext(), date_editText);
 
         return view;
     }
@@ -163,25 +163,25 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
 
     public void safeData() {
         Purchase purchase = new Purchase();
-        purchase.setAmount(Double.parseDouble(mAmount.getText().toString()));
-        purchase.setCurrencytype(mCurrencytype.getText().toString());
-        purchase.setDate(mDate.getText().toString());
-        purchase.setPricepercoin(Double.parseDouble(mPricepercoin.getText().toString()));
-        purchase.setValue(Double.parseDouble(mValue.getText().toString()));
-        mDbPurchase.writePurchase(purchase);
+        purchase.setAmount(Double.parseDouble(amountEditText.getText().toString()));
+        purchase.setCurrencytype(currencyTagAutoCompleteTextView.getText().toString());
+        purchase.setDate(date_editText.getText().toString());
+        purchase.setPricepercoin(Double.parseDouble(coinPriceEditText.getText().toString()));
+        purchase.setValue(Double.parseDouble(valueEditText.getText().toString()));
+        dbPurchase.writePurchase(purchase);
     }
 
     @Override
     public void postExecuteUpdateView(JSONObject result) {
-        mProgressBar.setVisibility(View.INVISIBLE);
-        mLoadDataButton.setVisibility(View.VISIBLE);
-        if (result.has(this.mCurrencyname)) {
-            if (!result.has(this.mCurrencyname)) {
-                mCoindata.setText(CryptoCompareApiWrapper.NO_DATA_AVAILABLE);
+        loadCurrencyPriceProgressBar.setVisibility(View.INVISIBLE);
+        loadDataImageButton.setVisibility(View.VISIBLE);
+        if (result.has(this.currencyName)) {
+            if (!result.has(this.currencyName)) {
+                coindataTextView.setText(CryptoCompareApiWrapper.NO_DATA_AVAILABLE);
             } else {
                 try {
 
-                    mCoindata.setText(mCurrencyname + ": " + String.valueOf(result.getDouble(mCurrencyname)));
+                    coindataTextView.setText(currencyName + ": " + String.valueOf(result.getDouble(currencyName)));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -191,8 +191,8 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
 
     @Override
     public void preExecuteUpdateView() {
-        mLoadDataButton.setVisibility(View.INVISIBLE);
-        mProgressBar.setVisibility(View.VISIBLE);
+        loadDataImageButton.setVisibility(View.INVISIBLE);
+        loadCurrencyPriceProgressBar.setVisibility(View.VISIBLE);
     }
 
 

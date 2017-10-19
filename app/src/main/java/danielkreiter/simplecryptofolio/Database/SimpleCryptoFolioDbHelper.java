@@ -14,20 +14,20 @@ public class SimpleCryptoFolioDbHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "SimpleCryptoFolio.db";
     public static final String TAG = "DbHelper";
-    private static SimpleCryptoFolioDbHelper mInstance = null;
+    private static SimpleCryptoFolioDbHelper instance = null;
 
-    private Context mContext;
+    private Context context;
 
     private SimpleCryptoFolioDbHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.mContext = context;
+        this.context = context;
     }
 
     public static synchronized SimpleCryptoFolioDbHelper getInstance(Context context) {
-        if (mInstance == null) {
-            mInstance = new SimpleCryptoFolioDbHelper(context.getApplicationContext());
+        if (instance == null) {
+            instance = new SimpleCryptoFolioDbHelper(context.getApplicationContext());
         }
-        return mInstance;
+        return instance;
     }
 
     public void onCreate(SQLiteDatabase db) {
