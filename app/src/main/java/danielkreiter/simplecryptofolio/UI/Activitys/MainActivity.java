@@ -51,6 +51,16 @@ public class MainActivity extends AppCompatActivity {
         // write some samples into the database
         writeExamplePurchases();
         writeExampleCryptocurrencies();
+        writeExamplePurchases();
+        writeExampleCryptocurrencies();
+        writeExamplePurchases();
+        writeExampleCryptocurrencies();
+        writeExamplePurchases();
+        writeExampleCryptocurrencies();
+        writeExamplePurchases();
+        writeExampleCryptocurrencies();
+        writeExamplePurchases();
+        writeExampleCryptocurrencies();
 
 
         // Get the ViewPager and set it's PagerAdapter so that it can display items

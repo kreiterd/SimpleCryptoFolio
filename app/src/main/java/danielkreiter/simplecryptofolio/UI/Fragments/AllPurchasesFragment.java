@@ -105,7 +105,7 @@ public class AllPurchasesFragment extends Fragment {
             dbPurchase.deletePurchase(p.getId());
             purchases.remove(p);
         }
-        purchaseOverviewAdapter.notifyDataSetChanged();
+        reloadAdapterWithNewPurchases();
     }
 
 }

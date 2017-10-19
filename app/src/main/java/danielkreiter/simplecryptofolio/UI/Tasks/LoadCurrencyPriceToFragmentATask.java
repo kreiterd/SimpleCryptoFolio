@@ -48,7 +48,7 @@ public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, 
                     .getCurrencyPrice(this.sourceCurrencyTag, "EUR")));
 
         } catch (JSONException e) {
-            // TODO Auto-generated catch block
+            // TODO No general exepctions. Fix.
             e.printStackTrace();
         }
         try { // todo: remove this code
