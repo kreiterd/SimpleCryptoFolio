@@ -45,6 +45,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
     List<PieEntry> entries;
     List<Purchase> purchases;
     PieDataSet valueDataSet;
+
     private ArrayList<LoadCurrencyPriceToFragmentATask> loadingTasks;
     private int page;
 
@@ -151,16 +152,19 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
     @Override
     public void postExecuteUpdateView(JSONObject result) {
 
-
         Iterator<String> iter = result.keys();
         while (iter.hasNext()) {
             String key = iter.next();
+
             try {
                 PieEntry pieEntry = new PieEntry((float) result.getDouble(key) * this.totalAmount.get(key).floatValue(), key);
                 valueDataSet.addEntry(pieEntry);
                 // ToDo: let users choose their own color
                 Random rnd = new Random();
-                int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                Integer color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                while (colors.contains(color)) {
+                    color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+                }
                 valueDataSet.addColor(color);
                 valuePieChart.notifyDataSetChanged(); // let the chart know it's data changed
                 valuePieChart.invalidate(); // refresh
