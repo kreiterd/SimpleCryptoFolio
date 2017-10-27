@@ -12,6 +12,7 @@
         android:id="@+id/input_layout_currencytype"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="64dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +24,7 @@
             android:layout_height="wrap_content"
 
             android:ems="10"
-            android:hint="Currency-Kürzel"
+            android:hint="@string/currencytag"
             android:inputType="text" />
     </android.support.design.widget.TextInputLayout>
 
@@ -31,6 +32,7 @@
         android:id="@+id/input_layout_date"
         android:layout_width="348dp"
         android:layout_height="51dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -41,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Datum"
+            android:hint="@string/date"
             android:inputType="date" />
     </android.support.design.widget.TextInputLayout>
 
@@ -49,6 +51,7 @@
         android:id="@+id/input_layout_value"
         android:layout_width="347dp"
         android:layout_height="55dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -59,7 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Total value"
+            android:hint="@string/totalvalue"
             android:inputType="numberDecimal"
 
             />
@@ -69,6 +72,7 @@
         android:id="@+id/input_layout_amount"
         android:layout_width="349dp"
         android:layout_height="57dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -80,7 +84,7 @@
             android:layout_height="47dp"
 
             android:ems="10"
-            android:hint="Anzahl"
+            android:hint="@string/amount"
             android:inputType="numberDecimal" />
     </android.support.design.widget.TextInputLayout>
 
@@ -88,6 +92,7 @@
         android:id="@+id/input_layout_pricepercoin"
         android:layout_width="349dp"
         android:layout_height="54dp"
+        android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Kaufkurs"
+            android:hint="@string/ordervalue"
             android:inputType="numberDecimal" />
     </android.support.design.widget.TextInputLayout>
 
@@ -107,6 +112,7 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="33dp"
         android:layout_height="26dp"
+        android:layout_marginLeft="176dp"
         android:layout_marginStart="176dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="@+id/input_layout_currencytype"
@@ -117,6 +123,7 @@
         android:layout_width="39dp"
         android:layout_height="32dp"
 
+        android:layout_marginLeft="172dp"
         android:layout_marginStart="172dp"
         android:layout_marginTop="12dp"
         android:background="@android:color/transparent"
@@ -131,8 +138,10 @@
         android:id="@+id/coindata_textview"
         android:layout_width="209dp"
         android:layout_height="20dp"
-        android:layout_marginTop="56dp"
-        android:text="TextView"
+        android:layout_marginLeft="208dp"
+        android:layout_marginStart="208dp"
+        android:layout_marginTop="24dp"
+        android:text=""
         app:layout_constraintStart_toStartOf="@+id/input_layout_currencytype"
         app:layout_constraintTop_toTopOf="@+id/input_layout_currencytype" />
 
@@ -142,14 +151,12 @@
         android:layout_width="match_parent"
 
         android:layout_height="53dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:onClick="onClick"
-        android:text="Abspeichern"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_marginTop="8dp"
+        android:text="@string/save"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_pricepercoin" />
 
 
 </android.support.constraint.ConstraintLayout>

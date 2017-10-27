@@ -87,12 +87,11 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.i(TAG, "onActivityCreated called.");
-        // setRetainInstance(true);
         createCurrentValueChart();
 
         loadCurrencyData();
     }
+
 
     void loadCurrencyData() {
         valuePieChart.setVisibility(View.INVISIBLE);
@@ -103,7 +102,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
         createCurrentValueChart();
 
         // Add up the values of all purchases for each separate currency
-        // ToDo: save the whole amount for each currency in the database
+        // ToDo: save the total amount for each currency in the database
         for (Purchase purchase : purchases) {
 
             String currencyName = purchase.getCurrencytype();
@@ -183,7 +182,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
 
         loadValuesProgressBar.setProgress(p * taskCounter);
         Resources res = getResources();
-        String loadCurrencyData = res.getString(R.string.load_currency_data);
+        String loadCurrencyData = getResources().getString(R.string.load_currency_data);
         loadValuesTextView.setText(loadCurrencyData + "" + p * taskCounter + "%");
         if (taskCounter == loadingTasks.size()) {
             loadValuesTextView.setText(loadCurrencyData + "100%");

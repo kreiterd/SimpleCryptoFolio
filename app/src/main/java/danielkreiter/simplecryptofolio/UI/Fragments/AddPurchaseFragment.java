@@ -2,7 +2,6 @@ package danielkreiter.simplecryptofolio.UI.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -68,7 +67,6 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate called.");
         getArguments().getInt(ARG_PAGE);
     }
 

@@ -19,7 +19,6 @@
     <string name="nav_item_friends">Friends</string>
     <string name="nav_item_notifications">Messages</string>
 
-    <!-- navigation drawer item labels  -->
     <string-array name="nav_drawer_labels">
         <item>@string/nav_item_home</item>
         <item>@string/nav_item_friends</item>
@@ -29,4 +28,13 @@
     <string name="title_messages">Messages</string>
     <string name="title_friends">Friends</string>
     <string name="title_home">Home</string>
+
+
+    <string name="save">Save</string>
+    <string name="currencytag">Currency tag</string>
+    <string name="totalvalue">Total value</string>
+    <string name="amount">Amount</string>
+    <string name="ordervalue">Order value</string>
+    <string name="date">Date</string>
+
 </resources>
