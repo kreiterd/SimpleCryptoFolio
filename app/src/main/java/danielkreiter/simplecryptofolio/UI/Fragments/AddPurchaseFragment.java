@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -76,6 +77,7 @@ public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_add_purchase,
                 container, false);
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
 
         dbPurchase = new DbPurchase(view.getContext());
         dbCryptocurrency = new DbCryptocurrency(view.getContext());
