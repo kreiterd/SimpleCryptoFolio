@@ -1,5 +1,6 @@
 package danielkreiter.simplecryptofolio.UI.Fragments;
 
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -71,16 +73,34 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
 
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        /*
+         *  Hide the keyboard when the fragment is called.
+         *  If the tab is changed while the focus is on an edit text, the keyboard remains open in the new tab.
+         */
+        if (isVisibleToUser && getActivity() != null) {
+            InputMethodManager mImm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            mImm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+            mImm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
+        }
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_value_chart, container, false);
+
+
         valuePieChart = view.findViewById(R.id.chart);
         loadValuesProgressBar = view.findViewById(R.id.loading_progressbar);
         loadValuesTextView = view.findViewById(R.id.loading_textview);
 
-        Log.i(TAG, "onCreateView called.");
 
         return view;
     }
@@ -94,6 +114,8 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
 
 
     void loadCurrencyData() {
+
+
         valuePieChart.setVisibility(View.INVISIBLE);
         loadValuesProgressBar.setVisibility(View.VISIBLE);
         purchases = (new DbPurchase(getActivity())).readPurchases();
@@ -144,6 +166,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
 
         // refresh the pieChart
         valuePieChart.invalidate();
+
 
     }
 

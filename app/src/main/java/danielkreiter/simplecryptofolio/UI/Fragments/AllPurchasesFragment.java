@@ -1,10 +1,12 @@
 package danielkreiter.simplecryptofolio.UI.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -77,11 +79,23 @@ public class AllPurchasesFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+
+
         if (isVisibleToUser) {
+            /*
+             *  Hide the keyboard when the fragment is called.
+             *  If the tab is changed while the focus is on an edit text, the keyboard remains open in the new tab.
+             */
+            if (getActivity() != null) {
+                InputMethodManager mImm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                mImm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                mImm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+            }
+
+            // reload the list
             reloadAdapterWithNewPurchases();
         }
     }
-
 
     private void reloadAdapterWithNewPurchases() {
         if (dbPurchase != null && purchaseOverviewAdapter != null) {
@@ -93,6 +107,7 @@ public class AllPurchasesFragment extends Fragment {
             purchaseOverviewAdapter.notifyDataSetChanged();
         }
     }
+
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);

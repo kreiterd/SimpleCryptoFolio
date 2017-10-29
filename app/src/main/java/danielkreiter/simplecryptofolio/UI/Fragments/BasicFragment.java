@@ -1,10 +1,12 @@
 package danielkreiter.simplecryptofolio.UI.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import danielkreiter.simplecryptofolio.R;
 
@@ -27,6 +29,21 @@ public class BasicFragment extends Fragment {
         page = getArguments().getInt(ARG_PAGE);
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+        /*
+         *  Hide the keyboard when the fragment is called.
+         *  If the tab is changed while the focus is on an edit text, the keyboard remains open in the new tab.
+         */
+        if (isVisibleToUser && getActivity() != null) {
+            InputMethodManager mImm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            mImm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+            mImm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
+
+        }
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
