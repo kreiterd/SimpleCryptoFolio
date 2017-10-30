@@ -12,7 +12,7 @@ import danielkreiter.simplecryptofolio.R;
 
 public class BasicFragment extends Fragment {
     public static final String ARG_PAGE = "ARG_PAGE";
-
+    protected boolean viewReady = false;
     private int page;
 
     public static BasicFragment newInstance(int page) {
@@ -24,26 +24,41 @@ public class BasicFragment extends Fragment {
     }
 
     @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+
+
+        if (isVisibleToUser) {
+
+            /*
+             *  Hide the keyboard when the fragment is called.
+             *  If the tab is changed while the focus is on an edit text, the keyboard remains open in the new tab.
+             */
+            hideKeyboard();
+
+        }
+    }
+
+    void hideKeyboard() {
+        if (getActivity() != null) {
+            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(
+                    Context.INPUT_METHOD_SERVICE);
+            View focused = getActivity().getCurrentFocus();
+            if (focused != null) {
+                inputManager.hideSoftInputFromWindow(focused.getWindowToken(),
+                        InputMethodManager.HIDE_NOT_ALWAYS);
+            }
+        }
+    }
+
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         page = getArguments().getInt(ARG_PAGE);
     }
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
 
-        /*
-         *  Hide the keyboard when the fragment is called.
-         *  If the tab is changed while the focus is on an edit text, the keyboard remains open in the new tab.
-         */
-        if (isVisibleToUser && getActivity() != null) {
-            InputMethodManager mImm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            mImm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-            mImm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-
-        }
-    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

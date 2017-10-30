@@ -1,16 +1,12 @@
 package danielkreiter.simplecryptofolio.UI.Fragments;
 
-import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -36,7 +32,7 @@ import danielkreiter.simplecryptofolio.UI.Elements.PieChartValueFormatter;
 import danielkreiter.simplecryptofolio.UI.Interfaces.ISendDataToUI;
 import danielkreiter.simplecryptofolio.UI.Tasks.LoadCurrencyPriceToFragmentATask;
 
-public class ValueChartFragment extends Fragment implements ISendDataToUI {
+public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String TAG = "ValueChartFragment";
     PieChart valuePieChart;
@@ -47,7 +43,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
     List<PieEntry> entries;
     List<Purchase> purchases;
     PieDataSet valueDataSet;
-
+    Random rnd;
     private ArrayList<LoadCurrencyPriceToFragmentATask> loadingTasks;
     private int page;
 
@@ -62,31 +58,13 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.i(TAG, "onCreate called.");
         page = getArguments().getInt(ARG_PAGE);
 
         loadingTasks = new ArrayList<>();
         totalAmount = new HashMap<>();
         colors = new ArrayList<>();
         entries = new ArrayList<>();
-
-
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-
-        /*
-         *  Hide the keyboard when the fragment is called.
-         *  If the tab is changed while the focus is on an edit text, the keyboard remains open in the new tab.
-         */
-        if (isVisibleToUser && getActivity() != null) {
-            InputMethodManager mImm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            mImm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-            mImm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), 0);
-
-        }
+        rnd = new Random();
     }
 
 
@@ -101,99 +79,45 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
         loadValuesProgressBar = view.findViewById(R.id.loading_progressbar);
         loadValuesTextView = view.findViewById(R.id.loading_textview);
 
-
+        this.viewReady = true;
         return view;
     }
 
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        createCurrentValueChart();
 
+        createCurrentValueChart();
         loadCurrencyData();
     }
 
 
-    void loadCurrencyData() {
-
-
-        valuePieChart.setVisibility(View.INVISIBLE);
-        loadValuesProgressBar.setVisibility(View.VISIBLE);
-        purchases = (new DbPurchase(getActivity())).readPurchases();
-        totalAmount.clear();
-        entries.clear();
-        createCurrentValueChart();
-
-        // Add up the values of all purchases for each separate currency
-        // ToDo: save the total amount for each currency in the database
-        for (Purchase purchase : purchases) {
-
-            String currencyName = purchase.getCurrencytype();
-            Double amount = purchase.getAmount();
-
-            if (totalAmount.containsKey(currencyName))
-                totalAmount.put(currencyName, totalAmount.get(currencyName) + amount);
-            else
-                totalAmount.put(currencyName, amount);
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && viewReady) {
+            // reload the chart
+            loadCurrencyData();
         }
-
-
-        // load the actual value of each currency and pass the results to postExecuteUpdateView(...)
-        for (Map.Entry<String, Double> entry : totalAmount.entrySet()) {
-            LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask = new LoadCurrencyPriceToFragmentATask(entry.getKey(), this);
-            loadCurrencyPriceToFragmentATask.execute();
-            loadingTasks.add(loadCurrencyPriceToFragmentATask);
-        }
-    }
-
-
-    void createCurrentValueChart() {
-
-        valuePieChart.getLegend().setEnabled(false);
-        valuePieChart.getDescription().setEnabled(false);
-
-        // create the dataSet
-        valueDataSet = new PieDataSet(entries, "Label");
-
-        // chart settings
-        valueDataSet.setValueTextSize(12f);
-        valueDataSet.setValueTextColor(Color.WHITE);
-
-        // build the pieChart
-        PieData pieData = new PieData(valueDataSet);
-        pieData.setValueFormatter(new PieChartValueFormatter());
-        valuePieChart.setData(pieData);
-
-        // refresh the pieChart
-        valuePieChart.invalidate();
-
-
     }
 
 
     @Override
     public void postExecuteUpdateView(JSONObject result) {
-
         Iterator<String> iter = result.keys();
         while (iter.hasNext()) {
-            String key = iter.next();
+            valueDataSet.addEntry(createPieEntry(iter.next(), result));
 
-            try {
-                PieEntry pieEntry = new PieEntry((float) result.getDouble(key) * this.totalAmount.get(key).floatValue(), key);
-                valueDataSet.addEntry(pieEntry);
-                // ToDo: let users choose their own color
-                Random rnd = new Random();
-                Integer color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-                while (colors.contains(color)) {
-                    color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-                }
-                valueDataSet.addColor(color);
-                valuePieChart.notifyDataSetChanged(); // let the chart know it's data changed
-                valuePieChart.invalidate(); // refresh
-            } catch (JSONException e) {
-                // ToDo: handle exceptions! don't leave this empty!
-            }
+            // set the color for the pie piece
+            // ToDo: let users choose their own color
+            Integer color = randomColor();
+            while (colors.contains(color))
+                color = randomColor();
+            valueDataSet.addColor(color);
+
+            refreshChart();
         }
+
 
         int taskCounter = 1;
         for (LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask : loadingTasks) {
@@ -209,8 +133,7 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
         loadValuesTextView.setText(loadCurrencyData + "" + p * taskCounter + "%");
         if (taskCounter == loadingTasks.size()) {
             loadValuesTextView.setText(loadCurrencyData + "100%");
-            valuePieChart.setVisibility(View.VISIBLE);
-            loadValuesProgressBar.setVisibility(View.INVISIBLE);
+            showChart();
         }
 
     }
@@ -219,4 +142,102 @@ public class ValueChartFragment extends Fragment implements ISendDataToUI {
     public void preExecuteUpdateView() {
 
     }
+
+    void loadCurrencyData() {
+
+
+        clearValues();
+        showProgressBar();
+        purchases = (new DbPurchase(getActivity())).readPurchases();
+
+
+        // add up the values of all purchases for each separate currency
+        for (Purchase purchase : purchases) {
+            String currencyName = purchase.getCurrencytype();
+            Double amount = purchase.getAmount();
+
+            if (totalAmount.containsKey(currencyName))
+                totalAmount.put(currencyName, totalAmount.get(currencyName) + amount);
+            else
+                totalAmount.put(currencyName, amount);
+        }
+
+        // load the actual value of each currency and pass the results to postExecuteUpdateView(...)
+        for (Map.Entry<String, Double> entry : totalAmount.entrySet()) {
+            LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask = new LoadCurrencyPriceToFragmentATask(entry.getKey(), this);
+            loadCurrencyPriceToFragmentATask.execute();
+            loadingTasks.add(loadCurrencyPriceToFragmentATask);
+        }
+    }
+
+
+    void createCurrentValueChart() {
+
+
+        // create the dataSet
+        valueDataSet = new PieDataSet(entries, "Label");
+
+        // chart settings
+        valuePieChart.getLegend().setEnabled(false);
+        valuePieChart.getDescription().setEnabled(false);
+        valueDataSet.setValueTextSize(12f);
+        valueDataSet.setValueTextColor(Color.WHITE);
+
+
+        // build the pieChart
+        PieData pieData = new PieData(valueDataSet);
+        pieData.setValueFormatter(new PieChartValueFormatter());
+        valuePieChart.setData(pieData);
+
+        // refresh the pieChart
+        refreshChart();
+    }
+
+
+    PieEntry createPieEntry(String key, JSONObject result) {
+        PieEntry pieEntry = null;
+        try {
+            pieEntry = new PieEntry((float) result.getDouble(key) *
+                    this.totalAmount.get(key).floatValue(), key);
+        } catch (JSONException e) {
+            // ToDo: implement proper exception handling
+            e.printStackTrace();
+        } finally {
+            return pieEntry;
+        }
+    }
+
+
+    void clearValues() {
+        totalAmount.clear();
+        entries.clear();
+        loadingTasks.clear();
+        loadValuesProgressBar.setProgress(0);
+    }
+
+    void showProgressBar() {
+        valuePieChart.setVisibility(View.INVISIBLE);
+        loadValuesProgressBar.setVisibility(View.VISIBLE);
+        loadValuesTextView.setVisibility(View.VISIBLE);
+    }
+
+    void showChart() {
+        valuePieChart.setVisibility(View.VISIBLE);
+        loadValuesProgressBar.setVisibility(View.INVISIBLE);
+        loadValuesTextView.setVisibility(View.INVISIBLE);
+    }
+
+    Integer randomColor() {
+        return Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+    }
+
+
+    void refreshChart() {
+        if (valuePieChart != null) {
+            valuePieChart.notifyDataSetChanged(); // let the chart know it's data changed
+            valuePieChart.invalidate(); // refresh
+        }
+    }
+
+
 }

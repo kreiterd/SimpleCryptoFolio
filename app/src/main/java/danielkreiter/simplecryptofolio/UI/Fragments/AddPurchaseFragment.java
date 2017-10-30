@@ -1,7 +1,6 @@
 package danielkreiter.simplecryptofolio.UI.Fragments;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +32,7 @@ import danielkreiter.simplecryptofolio.UI.Tasks.LoadCurrencyPriceToFragmentATask
 /**
  * The type AddPurchaseFragment
  */
-public class AddPurchaseFragment extends Fragment implements ISendDataToUI {
+public class AddPurchaseFragment extends BasicFragment implements ISendDataToUI {
 
     public static final String ARG_PAGE = "ARG_PAGE";
     public static final String TAG = "AddPurchaseFragment";
