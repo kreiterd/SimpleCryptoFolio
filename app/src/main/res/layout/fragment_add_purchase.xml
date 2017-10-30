@@ -10,7 +10,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -18,11 +20,10 @@
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_currencytype"
-                android:layout_width="match_parent"
+                android:layout_width="299dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="64dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -34,17 +35,17 @@
                     android:ems="10"
                     android:hint="@string/currencytag"
                     android:imeOptions="actionNext"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:paddingLeft="22dp" />
             </android.support.design.widget.TextInputLayout>
 
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_amount"
-                android:layout_width="349dp"
+                android:layout_width="299dp"
                 android:layout_height="57dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/input_layout_currencytype">
 
@@ -56,14 +57,14 @@
                     android:hint="@string/amount"
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
-                    android:nextFocusForward="@+id/date_editText" />
+                    android:nextFocusForward="@+id/date_editText"
+                    android:paddingLeft="22dp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_date"
-                android:layout_width="348dp"
+                android:layout_width="300dp"
                 android:layout_height="51dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -76,14 +77,14 @@
                     android:ems="10"
                     android:hint="@string/date"
                     android:imeOptions="actionNext"
-                    android:inputType="date" />
+                    android:inputType="date"
+                    android:paddingLeft="23dp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/input_layout_value"
-                android:layout_width="347dp"
+                android:layout_width="214dp"
                 android:layout_height="55dp"
-                android:layout_marginLeft="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -98,7 +99,7 @@
                     android:imeOptions="actionNext"
                     android:inputType="numberDecimal"
 
-                    />
+                    android:paddingLeft="22dp" />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -116,9 +117,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="@string/ordervalue"
+                    android:hint="@string/pricepercoin"
                     android:imeOptions="actionNext"
-                    android:inputType="numberDecimal" />
+                    android:inputType="numberDecimal"
+                    android:paddingLeft="22dp" />
             </android.support.design.widget.TextInputLayout>
 
             <ProgressBar
@@ -161,15 +163,65 @@
             <Button
                 android:id="@+id/safe_button"
                 style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="match_parent"
+                android:layout_width="228dp"
 
                 android:layout_height="53dp"
-                android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/save"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/input_layout_pricepercoin" />
+
+            <ImageView
+                android:id="@+id/money"
+                android:layout_width="21dp"
+                android:layout_height="19dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="40dp"
+                android:src="@drawable/ic_code_black_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/amount"
+                android:layout_width="19dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="56dp"
+                android:src="@drawable/ic_add_shopping_cart_black_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/money" />
+
+            <ImageView
+                android:id="@+id/totalvalue"
+                android:layout_width="19dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="48dp"
+                android:src="@drawable/ic_attach_money_black_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/date" />
+
+            <ImageView
+                android:id="@+id/percoin"
+                android:layout_width="13dp"
+                android:layout_height="12dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="48dp"
+                android:src="@drawable/ic_account_balance_black_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/totalvalue" />
+
+            <ImageView
+                android:id="@+id/date"
+                android:layout_width="17dp"
+                android:layout_height="16dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="44dp"
+                android:src="@drawable/ic_date_range_black_24dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/amount" />
+
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
 </android.support.constraint.ConstraintLayout>

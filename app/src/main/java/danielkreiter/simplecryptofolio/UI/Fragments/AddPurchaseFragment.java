@@ -26,6 +26,7 @@ import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
 import danielkreiter.simplecryptofolio.UI.Elements.EditTextDatePicker;
 import danielkreiter.simplecryptofolio.UI.Interfaces.ISendDataToUI;
+import danielkreiter.simplecryptofolio.UI.Tasks.AsyncTaskResult;
 import danielkreiter.simplecryptofolio.UI.Tasks.LoadCurrencyPriceToFragmentATask;
 
 
@@ -49,7 +50,6 @@ public class AddPurchaseFragment extends BasicFragment implements ISendDataToUI 
     private DbCryptocurrency dbCryptocurrency;
     private List<Cryptocurrency> cryptocurrency;
     private String currencyName;
-
 
 
     /**
@@ -171,21 +171,27 @@ public class AddPurchaseFragment extends BasicFragment implements ISendDataToUI 
     }
 
     @Override
-    public void postExecuteUpdateView(JSONObject result) {
-        loadCurrencyPriceProgressBar.setVisibility(View.INVISIBLE);
-        loadDataImageButton.setVisibility(View.VISIBLE);
-        if (result.has(this.currencyName)) {
-            if (!result.has(this.currencyName)) {
-                coindataTextView.setText(CryptoCompareApiWrapper.NO_DATA_AVAILABLE);
-            } else {
-                try {
-
-                    coindataTextView.setText(currencyName + ": " + String.valueOf(result.getDouble(currencyName)));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+    public void postExecuteUpdateView(AsyncTaskResult<JSONObject> result) {
+        if (result.getError() != null) {
+            // ToDo: error handling here
+        } else {
+            JSONObject realResult = result.getResult();
+            loadCurrencyPriceProgressBar.setVisibility(View.INVISIBLE);
+            loadDataImageButton.setVisibility(View.VISIBLE);
+            if (realResult.has(this.currencyName)) {
+                if (!realResult.has(this.currencyName)) {
+                    coindataTextView.setText(CryptoCompareApiWrapper.NO_DATA_AVAILABLE);
+                } else {
+                    try {
+                        coindataTextView.setText(currencyName + ": " + String.valueOf(realResult.getDouble(currencyName)));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         }
+
+
     }
 
     @Override

@@ -34,7 +34,7 @@
     <string name="currencytag">Currency tag</string>
     <string name="totalvalue">Total value</string>
     <string name="amount">Amount</string>
-    <string name="ordervalue">Order value</string>
+    <string name="pricepercoin">price per coin</string>
     <string name="date">Date</string>
 
 </resources>

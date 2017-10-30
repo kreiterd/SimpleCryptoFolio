@@ -1,6 +1,5 @@
 package danielkreiter.simplecryptofolio.UI.Fragments;
 
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,6 +29,7 @@ import danielkreiter.simplecryptofolio.Model.Purchase;
 import danielkreiter.simplecryptofolio.R;
 import danielkreiter.simplecryptofolio.UI.Elements.PieChartValueFormatter;
 import danielkreiter.simplecryptofolio.UI.Interfaces.ISendDataToUI;
+import danielkreiter.simplecryptofolio.UI.Tasks.AsyncTaskResult;
 import danielkreiter.simplecryptofolio.UI.Tasks.LoadCurrencyPriceToFragmentATask;
 
 public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
@@ -103,39 +103,42 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
 
 
     @Override
-    public void postExecuteUpdateView(JSONObject result) {
-        Iterator<String> iter = result.keys();
-        while (iter.hasNext()) {
-            valueDataSet.addEntry(createPieEntry(iter.next(), result));
+    public void postExecuteUpdateView(AsyncTaskResult<JSONObject> result) {
+        if (result.getError() != null) {
+            // ToDo: error handling here
+        } else {
+            JSONObject realResult = result.getResult();
+            Iterator<String> iter = realResult.keys();
+            while (iter.hasNext()) {
+                valueDataSet.addEntry(createPieEntry(iter.next(), realResult));
 
-            // set the color for the pie piece
-            // ToDo: let users choose their own color
-            Integer color = randomColor();
-            while (colors.contains(color))
-                color = randomColor();
-            valueDataSet.addColor(color);
+                // set the color for the pie piece
+                // ToDo: let users choose their own color
+                Integer color = randomColor();
+                while (colors.contains(color))
+                    color = randomColor();
+                valueDataSet.addColor(color);
 
-            refreshChart();
-        }
+                refreshChart();
+            }
 
 
-        int taskCounter = 1;
-        for (LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask : loadingTasks) {
-            if ((loadCurrencyPriceToFragmentATask.getStatus() == AsyncTask.Status.FINISHED)) {
-                taskCounter++;
+            int taskCounter = 1;
+            for (LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask : loadingTasks) {
+                if ((loadCurrencyPriceToFragmentATask.getStatus() == AsyncTask.Status.FINISHED)) {
+                    taskCounter++;
+                }
+            }
+            int p = 100 / loadingTasks.size();
+
+            loadValuesProgressBar.setProgress(p * taskCounter);
+            String loadCurrencyData = getResources().getString(R.string.load_currency_data);
+            loadValuesTextView.setText(loadCurrencyData + "" + p * taskCounter + "%");
+            if (taskCounter == loadingTasks.size()) {
+                loadValuesTextView.setText(loadCurrencyData + "100%");
+                showChart();
             }
         }
-        int p = 100 / loadingTasks.size();
-
-        loadValuesProgressBar.setProgress(p * taskCounter);
-        Resources res = getResources();
-        String loadCurrencyData = getResources().getString(R.string.load_currency_data);
-        loadValuesTextView.setText(loadCurrencyData + "" + p * taskCounter + "%");
-        if (taskCounter == loadingTasks.size()) {
-            loadValuesTextView.setText(loadCurrencyData + "100%");
-            showChart();
-        }
-
     }
 
     @Override

@@ -6,13 +6,15 @@ import android.support.v4.app.Fragment;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+
 import danielkreiter.simplecryptofolio.CryptocurrencyData.CryptocurrencyDataProvider;
 import danielkreiter.simplecryptofolio.UI.Interfaces.ISendDataToUI;
 
 /**
  * Async-Task to load the data from an API to a activity
  */
-public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, JSONObject> {
+public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, AsyncTaskResult<JSONObject>> {
 
     private ISendDataToUI iSendDataToUi;
     private String sourceCurrencyTag;
@@ -40,23 +42,27 @@ public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, 
      * Loading the data
      */
     @Override
-    protected JSONObject doInBackground(String... args) {
+    protected AsyncTaskResult<JSONObject> doInBackground(String... args) {
         CryptocurrencyDataProvider cryptocurrencyDataProvider = new CryptocurrencyDataProvider();
         JSONObject result = new JSONObject();
-        try {
-            result.put(this.sourceCurrencyTag, Double.toString(cryptocurrencyDataProvider
-                    .getCurrencyPrice(this.sourceCurrencyTag, "EUR")));
 
-        } catch (JSONException e) {
-            // TODO No general exepctions. Fix.
-            e.printStackTrace();
-        }
+        /*
         try { // todo: remove this code
             Thread.sleep(400);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        return result;
+       */
+
+        try {
+            result.put(this.sourceCurrencyTag, Double.toString(cryptocurrencyDataProvider
+                    .getCurrencyPrice(this.sourceCurrencyTag, "EUR")));
+            return new AsyncTaskResult<JSONObject>(result);
+        } catch (JSONException e) {
+            return new AsyncTaskResult<JSONObject>(e);
+        } catch (IOException e) {
+            return new AsyncTaskResult<JSONObject>(e);
+        }
     }
 
     /**
@@ -65,7 +71,7 @@ public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, 
      * @param result
      */
     @Override
-    protected void onPostExecute(JSONObject result) {
+    protected void onPostExecute(AsyncTaskResult<JSONObject> result) {
         iSendDataToUi.postExecuteUpdateView(result);
     }
 }
