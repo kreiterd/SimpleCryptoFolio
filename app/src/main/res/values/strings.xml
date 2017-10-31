@@ -30,6 +30,12 @@
     <string name="title_home">Home</string>
 
 
+    <!-- valueChart -->
+    <string name="load_values_error">An error occurred. Please refresh this tab. </string>
+
+
+    <!-- AddPurchase -->
+
     <string name="save">Save</string>
     <string name="currencytag">Currency tag</string>
     <string name="totalvalue">Total value</string>

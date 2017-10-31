@@ -28,7 +28,10 @@ public class CryptoCompareApiWrapper implements IApiWrapper {
         try {
             String request = baseUrl + "/data/price?fsym=" + sourceCurrencyTag + "&tsyms=" + destinationCurrencyTag;
             URL url = new URL(request);
+
             urlConnection = (HttpURLConnection) url.openConnection();
+            urlConnection.setReadTimeout(2000);
+            urlConnection.setConnectTimeout(2000);
             InputStream in = new BufferedInputStream(urlConnection.getInputStream());
             BufferedReader reader = new BufferedReader(new InputStreamReader(in));
             String line;

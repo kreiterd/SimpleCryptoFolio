@@ -105,39 +105,21 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
     @Override
     public void postExecuteUpdateView(AsyncTaskResult<JSONObject> result) {
         if (result.getError() != null) {
-            // ToDo: error handling here
+            showLoadingError();
         } else {
             JSONObject realResult = result.getResult();
             Iterator<String> iter = realResult.keys();
             while (iter.hasNext()) {
                 valueDataSet.addEntry(createPieEntry(iter.next(), realResult));
-
                 // set the color for the pie piece
                 // ToDo: let users choose their own color
                 Integer color = randomColor();
                 while (colors.contains(color))
                     color = randomColor();
                 valueDataSet.addColor(color);
-
                 refreshChart();
             }
-
-
-            int taskCounter = 1;
-            for (LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask : loadingTasks) {
-                if ((loadCurrencyPriceToFragmentATask.getStatus() == AsyncTask.Status.FINISHED)) {
-                    taskCounter++;
-                }
-            }
-            int p = 100 / loadingTasks.size();
-
-            loadValuesProgressBar.setProgress(p * taskCounter);
-            String loadCurrencyData = getResources().getString(R.string.load_currency_data);
-            loadValuesTextView.setText(loadCurrencyData + "" + p * taskCounter + "%");
-            if (taskCounter == loadingTasks.size()) {
-                loadValuesTextView.setText(loadCurrencyData + "100%");
-                showChart();
-            }
+            updateProgressbar();
         }
     }
 
@@ -146,19 +128,32 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
 
     }
 
+    void updateProgressbar() {
+        int countFinishedTasks = 1;
+        for (LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask : loadingTasks) {
+            if ((loadCurrencyPriceToFragmentATask.getStatus() == AsyncTask.Status.FINISHED)) {
+
+                countFinishedTasks++;
+            }
+        }
+        int progress = 100 / loadingTasks.size();
+        loadValuesProgressBar.setProgress(progress * countFinishedTasks);
+        String loadCurrencyData = getResources().getString(R.string.load_currency_data);
+        loadValuesTextView.setText(loadCurrencyData + "" + progress * countFinishedTasks + "%");
+        if (countFinishedTasks == loadingTasks.size()) {
+            loadValuesTextView.setText(loadCurrencyData + "100%");
+            showChart();
+        }
+    }
+
     void loadCurrencyData() {
-
-
         clearValues();
         showProgressBar();
         purchases = (new DbPurchase(getActivity())).readPurchases();
-
-
         // add up the values of all purchases for each separate currency
         for (Purchase purchase : purchases) {
             String currencyName = purchase.getCurrencytype();
             Double amount = purchase.getAmount();
-
             if (totalAmount.containsKey(currencyName))
                 totalAmount.put(currencyName, totalAmount.get(currencyName) + amount);
             else
@@ -176,7 +171,6 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
 
     void createCurrentValueChart() {
 
-
         // create the dataSet
         valueDataSet = new PieDataSet(entries, "Label");
 
@@ -185,7 +179,6 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
         valuePieChart.getDescription().setEnabled(false);
         valueDataSet.setValueTextSize(12f);
         valueDataSet.setValueTextColor(Color.WHITE);
-
 
         // build the pieChart
         PieData pieData = new PieData(valueDataSet);
@@ -203,13 +196,25 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
             pieEntry = new PieEntry((float) result.getDouble(key) *
                     this.totalAmount.get(key).floatValue(), key);
         } catch (JSONException e) {
-            // ToDo: implement proper exception handling
-            e.printStackTrace();
+            showLoadingError();
         } finally {
             return pieEntry;
         }
     }
 
+    void showLoadingError() {
+        valuePieChart.setVisibility(View.INVISIBLE);
+        loadValuesProgressBar.setVisibility(View.INVISIBLE);
+        loadValuesTextView.setVisibility(View.VISIBLE);
+        this.loadValuesTextView.setText(getResources().getString(R.string.load_values_error));
+    }
+
+    void showLoadingError(String error) {
+        valuePieChart.setVisibility(View.INVISIBLE);
+        loadValuesProgressBar.setVisibility(View.INVISIBLE);
+        loadValuesTextView.setVisibility(View.VISIBLE);
+        this.loadValuesTextView.setText(error);
+    }
 
     void clearValues() {
         totalAmount.clear();
@@ -241,6 +246,4 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
             valuePieChart.invalidate(); // refresh
         }
     }
-
-
 }
