@@ -3,6 +3,7 @@ package danielkreiter.simplecryptofolio.UI.Fragments;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,12 +60,13 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         page = getArguments().getInt(ARG_PAGE);
-
         loadingTasks = new ArrayList<>();
         totalAmount = new HashMap<>();
         colors = new ArrayList<>();
         entries = new ArrayList<>();
         rnd = new Random();
+
+
     }
 
 
@@ -79,16 +81,22 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
         loadValuesProgressBar = view.findViewById(R.id.loading_progressbar);
         loadValuesTextView = view.findViewById(R.id.loading_textview);
 
+        if (!viewReady) {
+            loadCurrencyData();
+        }
+        
         this.viewReady = true;
+
         return view;
     }
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
         createCurrentValueChart();
-        loadCurrencyData();
+
     }
 
 
@@ -106,6 +114,7 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
     public void postExecuteUpdateView(AsyncTaskResult<JSONObject> result) {
         if (result.getError() != null) {
             showLoadingError();
+            Log.e(TAG, result.getError().getMessage().toString());
         } else {
             JSONObject realResult = result.getResult();
             Iterator<String> iter = realResult.keys();
@@ -117,8 +126,9 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
                 while (colors.contains(color))
                     color = randomColor();
                 valueDataSet.addColor(color);
-                refreshChart();
+
             }
+            refreshChart();
             updateProgressbar();
         }
     }
@@ -162,7 +172,8 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
 
         // load the actual value of each currency and pass the results to postExecuteUpdateView(...)
         for (Map.Entry<String, Double> entry : totalAmount.entrySet()) {
-            LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask = new LoadCurrencyPriceToFragmentATask(entry.getKey(), this);
+            LoadCurrencyPriceToFragmentATask loadCurrencyPriceToFragmentATask
+                    = new LoadCurrencyPriceToFragmentATask(entry.getKey(), this);
             loadCurrencyPriceToFragmentATask.execute();
             loadingTasks.add(loadCurrencyPriceToFragmentATask);
         }
