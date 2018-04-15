@@ -46,22 +46,14 @@ public class LoadCurrencyPriceToFragmentATask extends AsyncTask<String, String, 
         CryptocurrencyDataProvider cryptocurrencyDataProvider = new CryptocurrencyDataProvider();
         JSONObject result = new JSONObject();
 
-        /*
-        try { // todo: remove this code
-            Thread.sleep(400);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-       */
-
         try {
             result.put(this.sourceCurrencyTag, Double.toString(cryptocurrencyDataProvider
                     .getCurrencyPrice(this.sourceCurrencyTag, "EUR")));
-            return new AsyncTaskResult<JSONObject>(result);
+            return new AsyncTaskResult<>(result);
         } catch (JSONException e) {
-            return new AsyncTaskResult<JSONObject>(e);
+            return new AsyncTaskResult<>(e);
         } catch (IOException e) {
-            return new AsyncTaskResult<JSONObject>(e);
+            return new AsyncTaskResult<>(e);
         }
     }
 

@@ -65,8 +65,6 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
         colors = new ArrayList<>();
         entries = new ArrayList<>();
         rnd = new Random();
-
-
     }
 
 
@@ -84,7 +82,7 @@ public class ValueChartFragment extends BasicFragment implements ISendDataToUI {
         if (!viewReady) {
             loadCurrencyData();
         }
-        
+
         this.viewReady = true;
 
         return view;
